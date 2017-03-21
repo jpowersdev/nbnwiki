@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>package.json</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = "";
+    var thisFile = "package.json";
+    var defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container">
+    <div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+    
+      <tr>
+        <td class="docs">
+          <h1>package.json</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+    
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1"></a>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="json">{
+  <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Matterwiki"</span>,
+  <span class="hljs-attr">"version"</span>: <span class="hljs-string">"0.2.1"</span>,
+  <span class="hljs-attr">"description"</span>: <span class="hljs-string">"A simple and beautiful wiki for teams"</span>,
+  <span class="hljs-attr">"main"</span>: <span class="hljs-string">"index.js"</span>,
+  <span class="hljs-attr">"scripts"</span>: {
+    <span class="hljs-attr">"build"</span>: <span class="hljs-string">"cross-env NODE_ENV=production webpack --config ./webpack.config.prod.js --progress --profile --colors"</span>,
+    <span class="hljs-attr">"dev"</span>: <span class="hljs-string">"node index.js"</span>,
+    <span class="hljs-attr">"dev-testing"</span>: <span class="hljs-string">"cross-env TESTING=true node index.js"</span>,
+    <span class="hljs-attr">"start"</span>: <span class="hljs-string">"npm run build &amp;&amp; cross-env NODE_ENV=production node index.js"</span>,
+    <span class="hljs-attr">"testcafe"</span>: <span class="hljs-string">"testcafe chrome tests/e2e/tests/*.js --app \"npm run dev-testing\" --app-init-delay 10000"</span>,
+    <span class="hljs-attr">"test"</span>: <span class="hljs-string">"npm run build &amp;&amp; npm run testcafe"</span>
+  },
+  <span class="hljs-attr">"bin"</span>: {
+    <span class="hljs-attr">"wiki"</span>: <span class="hljs-string">"./install.js"</span>
+  },
+  <span class="hljs-attr">"engines"</span>: {
+    <span class="hljs-attr">"node"</span>: <span class="hljs-string">"~0.12.0 || ^4.2.0 || ^6.5.0"</span>
+  },
+  <span class="hljs-attr">"repository"</span>: {
+    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"git"</span>,
+    <span class="hljs-attr">"url"</span>: <span class="hljs-string">"git+https://github.com/Matterwiki/Matterwiki.git"</span>
+  },
+  <span class="hljs-attr">"author"</span>: <span class="hljs-string">"Nishant Arora (@nshntarora)"</span>,
+  <span class="hljs-attr">"license"</span>: <span class="hljs-string">"MIT"</span>,
+  <span class="hljs-attr">"bugs"</span>: {
+    <span class="hljs-attr">"url"</span>: <span class="hljs-string">"https://github.com/Matterwiki/Matterwiki/issues"</span>
+  },
+  <span class="hljs-attr">"homepage"</span>: <span class="hljs-string">"http://matterwiki.com"</span>,
+  <span class="hljs-attr">"dependencies"</span>: {
+    <span class="hljs-attr">"bcryptjs"</span>: <span class="hljs-string">"2.4.0"</span>,
+    <span class="hljs-attr">"body-parser"</span>: <span class="hljs-string">"1.15.2"</span>,
+    <span class="hljs-attr">"bookshelf"</span>: <span class="hljs-string">"0.10.0"</span>,
+    <span class="hljs-attr">"express"</span>: <span class="hljs-string">"4.14.0"</span>,
+    <span class="hljs-attr">"jsonwebtoken"</span>: <span class="hljs-string">"7.1.9"</span>,
+    <span class="hljs-attr">"knex"</span>: <span class="hljs-string">"^0.11.10"</span>,
+    <span class="hljs-attr">"multer"</span>: <span class="hljs-string">"1.2.1"</span>,
+    <span class="hljs-attr">"pm2"</span>: <span class="hljs-string">"^2.4.2"</span>,
+    <span class="hljs-attr">"react"</span>: <span class="hljs-string">"15.3.0"</span>,
+    <span class="hljs-attr">"react-dom"</span>: <span class="hljs-string">"15.3.0"</span>,
+    <span class="hljs-attr">"react-router"</span>: <span class="hljs-string">"2.8.1"</span>,
+    <span class="hljs-attr">"react-s-alert"</span>: <span class="hljs-string">"1.2.2"</span>,
+    <span class="hljs-attr">"sqlite3"</span>: <span class="hljs-string">"3.1.4"</span>,
+    <span class="hljs-attr">"whatwg-fetch"</span>: <span class="hljs-string">"2.0.1"</span>
+  },
+  <span class="hljs-attr">"devDependencies"</span>: {
+    <span class="hljs-attr">"babel-cli"</span>: <span class="hljs-string">"6.22.2"</span>,
+    <span class="hljs-attr">"babel-core"</span>: <span class="hljs-string">"6.22.1"</span>,
+    <span class="hljs-attr">"babel-loader"</span>: <span class="hljs-string">"6.2.10"</span>,
+    <span class="hljs-attr">"babel-preset-es2015"</span>: <span class="hljs-string">"6.22.0"</span>,
+    <span class="hljs-attr">"babel-preset-react"</span>: <span class="hljs-string">"6.22.0"</span>,
+    <span class="hljs-attr">"cross-env"</span>: <span class="hljs-string">"3.1.4"</span>,
+    <span class="hljs-attr">"react-hot-loader"</span>: <span class="hljs-string">"3.0.0-beta.6"</span>,
+    <span class="hljs-attr">"webpack"</span>: <span class="hljs-string">"2.2.0"</span>,
+    <span class="hljs-attr">"webpack-dev-middleware"</span>: <span class="hljs-string">"1.9.0"</span>,
+    <span class="hljs-attr">"webpack-dev-server"</span>: <span class="hljs-string">"2.2.0"</span>,
+    <span class="hljs-attr">"webpack-hot-middleware"</span>: <span class="hljs-string">"2.15.0"</span>,
+    <span class="hljs-attr">"testcafe"</span>: <span class="hljs-string">"^0.12.1"</span>
+  }
+}
+
+</pre>
+        </td>
+      </tr>
+    
+  </tbody>
+</table>
+
+  </div>
+</body>
+</html>

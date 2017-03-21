@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>articles.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../";
+    var thisFile = "api/articles.js";
+    var defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container">
+    <div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+    
+      <tr>
+        <td class="docs">
+          <h1>articles.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+    
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This file contains all endpoints related to articles.
+The endpoint to display articles related to a particular topic (/topics/:id/articles)
+is not in this file because that is a topics endpoint.
+To avoid any confusion, here is how you filter which file should an endpoint belong to.
+Check the first word in the url. If topics comes first (as it does in the above example)
+then move it to the topics endpoints file.</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2"></a>
+</div>
+<p>Importing the articles model</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-keyword">var</span> Articles = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../models/article.js'</span>);
+<span class="hljs-keyword">var</span> Topics = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../models/topic.js'</span>);
+<span class="hljs-keyword">var</span> Archives = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../models/archive.js'</span>);
+<span class="hljs-keyword">var</span> Users = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../models/user.js'</span>);
+
+<span class="hljs-keyword">var</span> db = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../db.js'</span>); <span class="hljs-comment">//this file contains the knex file import. it's equal to knex=require('knex')</span>
+
+<span class="hljs-built_in">module</span>.exports =  <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">app</span>)</span>{
+
+
+  app.post(<span class="hljs-string">'/articles'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This endpoint takes the article title, article body, and topic id from the request body.
+It then saves those values in the database using the insert query.
+After the operation is complete the endpoint returns the success object.
+TODO: create formal guidelines for different object structures and follow that throughout the API.</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    Articles.forge().save({
+        <span class="hljs-attr">title</span>: req.body.title,
+        <span class="hljs-attr">body</span>: req.body.body,
+        <span class="hljs-attr">topic_id</span>: req.body.topic_id,
+        <span class="hljs-attr">user_id</span>: req.body.user_id,
+        <span class="hljs-attr">what_changed</span>: <span class="hljs-string">"Another drop in the ocean of knowledge"</span>
+      }).then( <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">article</span>) </span>{
+        res.json({
+          <span class="hljs-attr">error</span>: {
+            <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">message</span>: <span class="hljs-string">''</span>
+          },
+          <span class="hljs-attr">code</span>: <span class="hljs-string">'B103'</span>,
+          <span class="hljs-attr">data</span>: article
+        });     <span class="hljs-comment">// responds back to request</span>
+     })
+     .catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+       res.status(<span class="hljs-number">500</span>).json({
+         <span class="hljs-attr">error</span>: {
+           <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+           <span class="hljs-attr">message</span>: error.message
+         },
+         <span class="hljs-attr">code</span>: <span class="hljs-string">'B104'</span>,
+         <span class="hljs-attr">data</span>: {
+
+         }
+       });
+     });
+  });
+
+
+  app.get(<span class="hljs-string">'/articles'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This is a GET endpoint that responds with the list of all the articles in the articles table
+the articles are present in the data object in the returning object.
+the error key in the returning object is a boolen which is false if there is no error and true otherwise</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    Articles.forge()
+    .query(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">qb</span>) </span>{
+        <span class="hljs-keyword">if</span>(req.query.count)
+          qb.limit(req.query.count);
+        qb.orderBy(<span class="hljs-string">'updated_at'</span>,<span class="hljs-string">'DESC'</span>);
+    })
+    .fetchAll()
+      .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">collection</span>) </span>{
+        res.json({
+          <span class="hljs-attr">error</span>: {
+            <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">message</span>: <span class="hljs-string">""</span>
+          },
+          <span class="hljs-attr">code</span>: <span class="hljs-string">'B105'</span>,
+          <span class="hljs-attr">data</span>: collection.toJSON()
+        });
+      })
+      .catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+        res.status(<span class="hljs-number">500</span>).json({
+          <span class="hljs-attr">error</span>: {
+            <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">message</span>: error.message
+          },
+          <span class="hljs-attr">code</span>: <span class="hljs-string">'B106'</span>,
+          <span class="hljs-attr">data</span>: {
+
+          }
+        });
+      });
+  });
+
+
+  app.put(<span class="hljs-string">'/articles'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This is a PUT endpoint for updating an article information.
+It takes the id of the topic to be updated and then updates it with the new object.
+the error key in the returning object is a boolen which is false if there is no error and true otherwise</p>
+</div>
+<div class="body">
+<p>TODO: Add updates only for columns that are in the request body. Handle exceptions.</p>
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    Articles.forge({<span class="hljs-attr">id</span>: req.body.id}).fetch().then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">article</span>)</span>{
+        Articles.forge({<span class="hljs-attr">id</span>: req.body.id})
+          .save({
+            <span class="hljs-attr">title</span>: req.body.title,
+            <span class="hljs-attr">body</span>: req.body.body,
+            <span class="hljs-attr">topic_id</span>: req.body.topic_id,
+            <span class="hljs-attr">what_changed</span>: req.body.what_changed,
+            <span class="hljs-attr">user_id</span>: req.body.user_id
+          })
+          .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+              Archives.forge().save({
+                <span class="hljs-attr">article_id</span>: req.body.id,
+                <span class="hljs-attr">title</span>: article.attributes.title,
+                <span class="hljs-attr">body</span>: article.attributes.body,
+                <span class="hljs-attr">what_changed</span>: article.attributes.what_changed,
+                <span class="hljs-attr">user_id</span>: article.attributes.user_id
+              })
+              .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">article</span>)</span>{
+                  res.json({
+                    <span class="hljs-attr">error</span>: {
+                      <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+                      <span class="hljs-attr">message</span>: <span class="hljs-string">''</span>
+                    },
+                    <span class="hljs-attr">code</span>: <span class="hljs-string">'B107'</span>,
+                    <span class="hljs-attr">data</span>: article
+                  });
+              })
+            })
+    })
+    .catch(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>)</span>{
+      res.status(<span class="hljs-number">500</span>).json({
+        <span class="hljs-attr">error</span>: {
+          <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+          <span class="hljs-attr">message</span>: error.message
+        },
+        <span class="hljs-attr">code</span>: <span class="hljs-string">'B108'</span>,
+        <span class="hljs-attr">data</span>: {
+
+        }
+      });
+    });
+    });
+
+
+
+  app.get(<span class="hljs-string">'/articles/compare'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This is a GET endpoint that takes IDs of two articles as parameters.
+It then returns both the article which could then be compared with each other
+through diffing which will be done on the front-end.
+The IDs params names are:
+article1: id of the first article
+article2: id of the second article
+The article with ID article1 is the first object in the Data array.
+The article with ID article2 is the second object in the Data array.
+The error key in the returning object is a boolen which is false if there is no error and true otherwise</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">
+    Articles.forge({<span class="hljs-attr">id</span>: req.query.article1})
+    .fetch()
+      .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">article1</span>) </span>{
+        Articles.forge({<span class="hljs-attr">id</span>: req.query.article2}).fetch().then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">article2</span>)</span>{
+          result = [];
+          result.push(article1.toJSON());
+          result.push(article2.toJSON());
+        }).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+            res.json({
+              <span class="hljs-attr">error</span>: {
+                <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+                <span class="hljs-attr">message</span>: <span class="hljs-string">''</span>
+              },
+              <span class="hljs-attr">code</span>: <span class="hljs-string">'B111'</span>,
+              <span class="hljs-attr">data</span>: result
+            });
+        })
+      })
+      .catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+        res.status(<span class="hljs-number">500</span>).json({
+          <span class="hljs-attr">error</span>: {
+            <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">message</span>: error.message
+          },
+          <span class="hljs-attr">code</span>: <span class="hljs-string">'B112'</span>,
+          <span class="hljs-attr">data</span>: {
+
+          }
+        });
+      });
+  });
+
+
+  app.get(<span class="hljs-string">'/articles/:id/'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This is a GET endpoint that responds with one article of the specific ID (identified through the ID param)
+the article is present in the data object in the returning object.
+the error key in the returning object is a boolen which is false if there is no error and true otherwise</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    Articles.forge({<span class="hljs-attr">id</span>: req.params.id})
+    .fetch()
+      .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">article</span>) </span>{
+        Topics.forge({<span class="hljs-attr">id</span>: article.attributes.topic_id}).fetch().then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">topic</span>)</span>{
+          articleObj = article.toJSON();
+          topicObj = topic.toJSON();
+          articleObj.topic = topicObj;
+        }).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+          Users.forge({<span class="hljs-attr">id</span>: articleObj.user_id}).fetch().then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">user</span>)</span>{
+            userObj = user.toJSON();
+            articleObj.user = {
+              <span class="hljs-attr">id</span>: userObj.id,
+              <span class="hljs-attr">name</span>: userObj.name,
+              <span class="hljs-attr">email</span>: userObj.email,
+              <span class="hljs-attr">about</span>: userObj.about,
+              <span class="hljs-attr">grp</span>: userObj.grp
+            };
+          })
+        .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+            res.json({
+              <span class="hljs-attr">error</span>: {
+                <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+                <span class="hljs-attr">message</span>: <span class="hljs-string">''</span>
+              },
+              <span class="hljs-attr">code</span>: <span class="hljs-string">'B113'</span>,
+              <span class="hljs-attr">data</span>: articleObj
+            });
+        })
+        })
+      })
+      .catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+        res.status(<span class="hljs-number">500</span>).json({
+          <span class="hljs-attr">error</span>: {
+            <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">message</span>: error.message
+          },
+          <span class="hljs-attr">code</span>: <span class="hljs-string">'B114'</span>,
+          <span class="hljs-attr">data</span>: {
+
+          }
+        });
+      });
+  });
+
+
+  app.get(<span class="hljs-string">'/articles/:id/history'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This is a GET endpoint that responds with previous versions of the
+article of the specific ID (identified through the ID param).
+The article is present in the data object in the returning object.
+The error key in the returning object is a boolen which is false if there is no error and true otherwise</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">
+    Articles.where({<span class="hljs-attr">id</span>: req.params.id}).fetch({<span class="hljs-attr">withRelated</span>: [{<span class="hljs-string">'archives'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">qb</span>) </span>{
+             qb.orderBy(<span class="hljs-string">"updated_at"</span>,<span class="hljs-string">"DESC"</span>);
+         }}]}).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">article</span>) </span>{
+      res.status(<span class="hljs-number">200</span>).json({
+        <span class="hljs-attr">error</span>: {
+          <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+          <span class="hljs-attr">message</span>: <span class="hljs-string">''</span>
+        },
+        <span class="hljs-attr">code</span>: <span class="hljs-string">'B115'</span>,
+        <span class="hljs-attr">data</span>: article.related(<span class="hljs-string">'archives'</span>)
+      });
+    })
+    .catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+        res.status(<span class="hljs-number">500</span>).json({
+          <span class="hljs-attr">error</span>: {
+            <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">message</span>: error.message
+          },
+          <span class="hljs-attr">code</span>: <span class="hljs-string">'B116'</span>,
+          <span class="hljs-attr">data</span>: {
+
+          }
+        });
+    });
+  });
+
+
+
+}
+
+</pre>
+        </td>
+      </tr>
+    
+  </tbody>
+</table>
+
+  </div>
+</body>
+</html>

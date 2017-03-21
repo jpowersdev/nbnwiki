@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>webpack-middleware.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = "";
+    var thisFile = "webpack-middleware.js";
+    var defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container">
+    <div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+    
+      <tr>
+        <td class="docs">
+          <h1>webpack-middleware.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+    
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1"></a>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">app</span>) </span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2"></a>
+</div>
+<p>webpack stuff</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">  <span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">"webpack"</span>);
+  <span class="hljs-keyword">var</span> webpackDevMiddleware = <span class="hljs-built_in">require</span>(<span class="hljs-string">"webpack-dev-middleware"</span>);
+  <span class="hljs-keyword">var</span> webpackHotMiddleware = <span class="hljs-built_in">require</span>(<span class="hljs-string">'webpack-hot-middleware'</span>);  
+  <span class="hljs-keyword">var</span> webpackConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./webpack.config"</span>);
+
+  <span class="hljs-keyword">var</span> compiler = webpack(webpackConfig);
+
+  app.use(webpackDevMiddleware(compiler, {
+    <span class="hljs-attr">publicPath</span>: webpackConfig.output.publicPath,
+    <span class="hljs-attr">stats</span>: {
+      <span class="hljs-attr">colors</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">hash</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">timings</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">chunks</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">chunkModules</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">modules</span>: <span class="hljs-literal">false</span>
+    }
+  }));
+
+  app.use(webpackHotMiddleware(compiler));
+}
+
+  
+</pre>
+        </td>
+      </tr>
+    
+  </tbody>
+</table>
+
+  </div>
+</body>
+</html>

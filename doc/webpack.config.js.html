@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>webpack.config.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = "";
+    var thisFile = "webpack.config.js";
+    var defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container">
+    <div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+    
+      <tr>
+        <td class="docs">
+          <h1>webpack.config.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+    
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>TODO extract common chunks from dev and production configs
+and use something like webpack-merge to put them all together for the environment needed
+Ref : http://survivejs.com/webpack/developing-with-webpack/splitting-configuration/</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">
+<span class="hljs-keyword">const</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">'webpack'</span>);
+<span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2"></a>
+</div>
+<p>TODO separate files for constants?</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-keyword">const</span> BUILD_DIR = path.resolve(__dirname, <span class="hljs-string">'client/public'</span>);
+<span class="hljs-keyword">const</span> APP_DIR = path.resolve(__dirname, <span class="hljs-string">'client/app'</span>);
+
+<span class="hljs-built_in">module</span>.exports = {
+  <span class="hljs-attr">entry</span>: [
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3"></a>
+</div>
+<p>react HMR specific stuff</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-string">'react-hot-loader/patch'</span>,
+    <span class="hljs-string">'webpack-hot-middleware/client?http://localhost:5000/'</span>,
+    <span class="hljs-string">'webpack/hot/dev-server'</span>,
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4"></a>
+</div>
+<p>polyfill for fetch API (Safari)
+TODO a better way to handle this, maybe?</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-string">'whatwg-fetch'</span>, 
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5"></a>
+</div>
+<p>entry point</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    APP_DIR + <span class="hljs-string">'/index.jsx'</span>
+  ],
+  <span class="hljs-attr">output</span>: {
+    <span class="hljs-attr">path</span>: BUILD_DIR,    
+    <span class="hljs-attr">publicPath</span> : <span class="hljs-string">'/public/'</span>,
+    <span class="hljs-attr">filename</span>: <span class="hljs-string">'bundle.js'</span>
+  },
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6"></a>
+</div>
+<p>enabling sourcemaps for easier debugging</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">  devtool : <span class="hljs-string">'inline-source-map'</span>,
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7"></a>
+</div>
+<p>again for react HMR</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">  devServer : {
+    <span class="hljs-attr">hot</span> : <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">inline</span> : <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">contentBase</span> : BUILD_DIR,
+    <span class="hljs-attr">publicPath</span> : <span class="hljs-string">'/public/'</span>
+  },
+  <span class="hljs-attr">plugins</span> : [
+      <span class="hljs-keyword">new</span> webpack.HotModuleReplacementPlugin(),
+      <span class="hljs-keyword">new</span> webpack.NamedModulesPlugin(),
+      <span class="hljs-keyword">new</span> webpack.DefinePlugin({
+      <span class="hljs-string">'process.env.NODE_ENV'</span>: <span class="hljs-built_in">JSON</span>.stringify(<span class="hljs-string">'dev'</span>)
+    })
+  ],
+  <span class="hljs-attr">module</span> : {
+    <span class="hljs-attr">loaders</span> : [
+      {
+        <span class="hljs-attr">test</span> : <span class="hljs-regexp">/\.jsx?/</span>,
+        <span class="hljs-attr">loader</span> : <span class="hljs-string">'babel-loader'</span>,
+        <span class="hljs-attr">include</span> : APP_DIR,
+        <span class="hljs-attr">exclude</span> : <span class="hljs-regexp">/node_modules/</span> ,
+        <span class="hljs-attr">query</span>: {
+          <span class="hljs-attr">presets</span>: [<span class="hljs-string">'es2015'</span>, <span class="hljs-string">'react'</span>]
+        }
+      }
+    ]
+  }
+};
+</pre>
+        </td>
+      </tr>
+    
+  </tbody>
+</table>
+
+  </div>
+</body>
+</html>

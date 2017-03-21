@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>users.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../";
+    var thisFile = "api/users.js";
+    var defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container">
+    <div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+    
+      <tr>
+        <td class="docs">
+          <h1>users.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+    
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This file contains all the endpoints related to users.
+For the method we use to categorize endpoints in file please read the top
+comment in the articles.js (same directory).</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2"></a>
+</div>
+<p>Importing the topics model</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-keyword">var</span> Users = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../models/user.js'</span>);
+<span class="hljs-keyword">var</span> bcrypt = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bcryptjs'</span>);
+<span class="hljs-keyword">var</span> Articles = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../models/article.js'</span>);
+<span class="hljs-keyword">const</span> saltRounds = <span class="hljs-number">10</span>;
+<span class="hljs-keyword">var</span> db = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../db.js'</span>); <span class="hljs-comment">//this file contains the knex file import. it's equal to knex=require('knex')</span>
+
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">app</span>) </span>{
+
+
+  app.post(<span class="hljs-string">'/users'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This is a POST endpoint which takes the user name, email, password, and about to create
+a new user profile.
+It responds with the created user object in the data key.
+the error key in the returning object is a boolen which is false if there is no error and true otherwise</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    bcrypt.hash(req.body.password, saltRounds, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, hash</span>) </span>{
+      Users.forge()
+        .save({
+          <span class="hljs-attr">name</span>: req.body.name,
+          <span class="hljs-attr">email</span>: req.body.email,
+          <span class="hljs-attr">password</span>: hash,
+          <span class="hljs-attr">about</span>: req.body.about,
+          <span class="hljs-attr">grp</span>: req.body.grp})
+        .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">collection</span>) </span>{
+          res.json({
+            <span class="hljs-attr">error</span>: {
+              <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+              <span class="hljs-attr">message</span>: <span class="hljs-string">'Success!'</span>
+            },
+            <span class="hljs-attr">code</span>: <span class="hljs-string">'B131'</span>,
+            <span class="hljs-attr">data</span>: collection.toJSON()
+          })
+        })
+        .catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+          res.status(<span class="hljs-number">500</span>).json({
+            <span class="hljs-attr">error</span>: {
+              <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+              <span class="hljs-attr">message</span>: error.message
+            },
+            <span class="hljs-attr">code</span>: <span class="hljs-string">'B132'</span>,
+            <span class="hljs-attr">data</span>: {
+
+            }
+          })
+        });
+        });
+      });
+
+
+  app.get(<span class="hljs-string">'/users'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This is a GET endpoint that responds with the list of all the topics in the topics table
+the topics are present in the data object in the returning object.
+the error key in the returning object is a boolen which is false if there is no error and true otherwise</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    Users.forge()
+    .query(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">qb</span>) </span>{
+        qb.select(<span class="hljs-string">'id'</span>,<span class="hljs-string">'name'</span>,<span class="hljs-string">'about'</span>,<span class="hljs-string">'email'</span>,<span class="hljs-string">'grp'</span>);
+        qb.orderBy(<span class="hljs-string">'created_at'</span>,<span class="hljs-string">'DESC'</span>);
+    })
+    .fetchAll()
+      .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">collection</span>) </span>{
+        res.json({
+          <span class="hljs-attr">error</span>: {
+            <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">message</span>: <span class="hljs-string">''</span>
+          },
+          <span class="hljs-attr">code</span>: <span class="hljs-string">'B133'</span>,
+          <span class="hljs-attr">data</span>: collection.toJSON()
+        })
+      })
+      .catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+        res.status(<span class="hljs-number">500</span>).json({
+          <span class="hljs-attr">error</span>: {
+            <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">message</span>: error.message
+          },
+          <span class="hljs-attr">code</span>: <span class="hljs-string">'B134'</span>,
+          <span class="hljs-attr">data</span>: {
+
+          }
+        })
+      });
+      });
+
+
+  app.put(<span class="hljs-string">'/users'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This is a PUT endpoint which takes the user's ID, name, email, password, and about to create
+a update the user profile of the given ID.
+It responds with the updated user object in the data key.
+the error key in the returning object is a boolen which is false if there is no error and true otherwise</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-keyword">if</span>(req.body.password!=<span class="hljs-literal">null</span>){
+      bcrypt.hash(req.body.password, saltRounds, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, hash</span>) </span>{
+        Users.forge({<span class="hljs-attr">id</span>: req.body.id})
+          .save({<span class="hljs-attr">name</span>: req.body.name, <span class="hljs-attr">email</span>: req.body.email, <span class="hljs-attr">password</span>: hash, <span class="hljs-attr">about</span>: req.body.about, <span class="hljs-attr">grp</span>: req.body.grp})
+          .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">collection</span>) </span>{
+            res.json({
+              <span class="hljs-attr">error</span>: {
+                <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+                <span class="hljs-attr">message</span>: <span class="hljs-string">'Success!'</span>
+              },
+              <span class="hljs-attr">code</span>: <span class="hljs-string">'B135'</span>,
+              <span class="hljs-attr">data</span>: {
+                <span class="hljs-attr">name</span>: req.body.name,
+                <span class="hljs-attr">email</span>: req.body.email,
+                <span class="hljs-attr">about</span>: req.body.about,
+                <span class="hljs-attr">grp</span>: req.body.grp
+              }
+            })
+          })
+          .catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+            res.status(<span class="hljs-number">500</span>).json({
+              <span class="hljs-attr">error</span>: {
+                <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+                <span class="hljs-attr">message</span>: error.message
+              },
+              <span class="hljs-attr">code</span>: <span class="hljs-string">'B136'</span>,
+              <span class="hljs-attr">data</span>: {
+
+              }
+            })
+          });
+      });
+    }
+    <span class="hljs-keyword">else</span> {
+      Users.forge({<span class="hljs-attr">id</span>: req.body.id})
+        .save({<span class="hljs-attr">name</span>: req.body.name, <span class="hljs-attr">email</span>: req.body.email, <span class="hljs-attr">about</span>: req.body.about, <span class="hljs-attr">grp</span>: req.body.grp})
+        .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">collection</span>) </span>{
+          res.json({
+            <span class="hljs-attr">error</span>: {
+              <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+              <span class="hljs-attr">message</span>: <span class="hljs-string">'Success!'</span>
+            },
+            <span class="hljs-attr">code</span>: <span class="hljs-string">'B135'</span>,
+            <span class="hljs-attr">data</span>: collection.toJSON()
+          })
+        })
+        .catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+          res.status(<span class="hljs-number">500</span>).json({
+            <span class="hljs-attr">error</span>: {
+              <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+              <span class="hljs-attr">message</span>: error.message
+            },
+            <span class="hljs-attr">code</span>: <span class="hljs-string">'B136'</span>,
+            <span class="hljs-attr">data</span>: {
+
+            }
+          })
+        });
+    }
+    });
+
+    app.delete(<span class="hljs-string">'/users'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This is a DELETE endpoint for delete a user from the database.
+It takes the id of the user and then deletes that record from the database.
+the error key in the returning object is a boolen which is false if there is no error and true otherwise</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">      Users.where({<span class="hljs-attr">id</span>: req.body.id}).fetch({<span class="hljs-attr">withRelated</span>: [<span class="hljs-string">'articles'</span>]}).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">user</span>) </span>{
+        <span class="hljs-keyword">var</span> user = user.toJSON();
+        <span class="hljs-keyword">var</span> articles = user.articles;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt;articles.length; i++)
+        {
+          Articles.forge({<span class="hljs-attr">id</span>: articles[i].id}).save({
+            <span class="hljs-attr">title</span>: articles[i].title,
+            <span class="hljs-attr">body</span>: articles[i].body,
+            <span class="hljs-attr">topic_id</span>: articles[i].topic_id,
+            <span class="hljs-attr">what_changed</span>: articles[i].what_changed,
+            <span class="hljs-attr">user_id</span>: <span class="hljs-number">1</span>
+          });
+        }
+      }).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        Users.forge({<span class="hljs-attr">id</span>: req.body.id})
+        .destroy()
+          .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+            res.json({
+              <span class="hljs-attr">error</span>: {
+                <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+                <span class="hljs-attr">message</span>: <span class="hljs-string">''</span>
+              },
+              <span class="hljs-attr">code</span>: <span class="hljs-string">'B137'</span>,
+              <span class="hljs-attr">data</span>: {}
+            });
+          })
+      })
+      .catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+          res.status(<span class="hljs-number">500</span>).json({
+            <span class="hljs-attr">error</span>: {
+              <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+              <span class="hljs-attr">message</span>: error.message
+            },
+            <span class="hljs-attr">code</span>: <span class="hljs-string">'B138'</span>,
+            <span class="hljs-attr">data</span>: {
+
+            }
+          })
+        });
+      });
+
+
+        app.get(<span class="hljs-string">'/users/:id'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This is a GET endpoint that responds with the user (with the given id)
+the user is present in the data object in the returning object.
+the error key in the returning object is a boolen which is false if there is no error and true otherwise</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">          Users.forge({<span class="hljs-attr">id</span>: req.params.id})
+          .query(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">qb</span>) </span>{
+              qb.select(<span class="hljs-string">'id'</span>,<span class="hljs-string">'name'</span>,<span class="hljs-string">'about'</span>,<span class="hljs-string">'email'</span>,<span class="hljs-string">'grp'</span>);
+          })
+          .fetch()
+            .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">user</span>) </span>{
+              res.json({
+                <span class="hljs-attr">error</span>: {
+                  <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+                  <span class="hljs-attr">message</span>: <span class="hljs-string">''</span>
+                },
+                <span class="hljs-attr">code</span>: <span class="hljs-string">'B133'</span>,
+                <span class="hljs-attr">data</span>: user.toJSON()
+              })
+            })
+            .catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+              res.status(<span class="hljs-number">500</span>).json({
+                <span class="hljs-attr">error</span>: {
+                  <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+                  <span class="hljs-attr">message</span>: error.message
+                },
+                <span class="hljs-attr">code</span>: <span class="hljs-string">'B134'</span>,
+                <span class="hljs-attr">data</span>: {
+
+                }
+              })
+            });
+            });
+
+
+
+}
+
+</pre>
+        </td>
+      </tr>
+    
+  </tbody>
+</table>
+
+  </div>
+</body>
+</html>

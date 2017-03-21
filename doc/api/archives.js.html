@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>archives.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../";
+    var thisFile = "api/archives.js";
+    var defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container">
+    <div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+    
+      <tr>
+        <td class="docs">
+          <h1>archives.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+    
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This file contains all endpoints related to archives</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">
+<span class="hljs-keyword">var</span> Articles = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../models/article.js'</span>);
+<span class="hljs-keyword">var</span> Topics = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../models/topic.js'</span>);
+<span class="hljs-keyword">var</span> Archives = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../models/archive.js'</span>);
+<span class="hljs-keyword">var</span> Users = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../models/user.js'</span>);
+
+<span class="hljs-keyword">var</span> db = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../db.js'</span>); <span class="hljs-comment">//this file contains the knex file import. it's equal to knex=require('knex')</span>
+
+<span class="hljs-built_in">module</span>.exports =  <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">app</span>)</span>{
+  app.get(<span class="hljs-string">'/archives/:id/'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This is a GET endpoint that responds with one article of the specific ID (identified through the ID param)
+the article is present in the data object in the returning object.
+the error key in the returning object is a boolen which is false if there is no error and true otherwise</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    Archives.forge({<span class="hljs-attr">id</span>: req.params.id})
+    .fetch()
+      .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">archive</span>) </span>{
+        Users.forge({<span class="hljs-attr">id</span>: archive.attributes.user_id}).fetch().then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">user</span>)</span>{
+          archiveObj = archive.toJSON();
+          userObj = user.toJSON();
+          archiveObj.user = {
+            <span class="hljs-attr">id</span>: userObj.id,
+            <span class="hljs-attr">name</span>: userObj.name,
+            <span class="hljs-attr">email</span>: userObj.email,
+            <span class="hljs-attr">about</span>: userObj.about
+          };
+        })
+        .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+            res.json({
+              <span class="hljs-attr">error</span>: {
+                <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+                <span class="hljs-attr">message</span>: <span class="hljs-string">''</span>
+              },
+              <span class="hljs-attr">code</span>: <span class="hljs-string">'B113'</span>,
+              <span class="hljs-attr">data</span>: archiveObj
+            });
+        })
+      })
+      .catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+        res.status(<span class="hljs-number">500</span>).json({
+          <span class="hljs-attr">error</span>: {
+            <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">message</span>: error.message
+          },
+          <span class="hljs-attr">code</span>: <span class="hljs-string">'B114'</span>,
+          <span class="hljs-attr">data</span>: {
+
+          }
+        });
+      });
+  });
+}
+
+</pre>
+        </td>
+      </tr>
+    
+  </tbody>
+</table>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API.md</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = "";
+    var thisFile = "API.md";
+    var defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+      <div class="heading h1">
+        <a href="#api-guide">API Guide</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#post-apisetup">POST /api/setup</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#post-apiauthenticate">POST /api/authenticate</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#get-apiusers-admin-only">GET /api/users (ADMIN ONLY)</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#post-apiusers-admin-only">POST /api/users (ADMIN ONLY)</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#put-apiusers-admin-only">PUT /api/users (ADMIN ONLY)</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#delete-apiusers-admin-only">DELETE /api/users (ADMIN ONLY)</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#get-apitopics">GET /api/topics</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#post-apitopics-admin-only">POST /api/topics (ADMIN ONLY)</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#put-apitopics-admin-only">PUT /api/topics (ADMIN ONLY)</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#delete-apitopics-admin-only">DELETE /api/topics (ADMIN ONLY)</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#get-apitopics-idarticles">GET /api/topics/:id/articles</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#get-apiarchives-id">GET /api/archives/:id</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#get-apiarticles">GET /api/articles</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#post-apiarticles">POST /api/articles</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#put-apiarticles">PUT /api/articles</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#delete-apiarticles-admin-only">DELETE /api/articles (ADMIN ONLY)</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#get-apiarticles-id">GET /api/articles/:id</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#get-apiarticles-idhistory">GET /api/articles/:id/history</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#post-apilogo-admin-only">POST /api/logo (ADMIN ONLY)</a>
+      </div>
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container">
+    <div class="docs markdown"><div class="pilwrap" id="api-guide">
+  <h1>
+    <a href="#api-guide" name="api-guide" class="pilcrow"></a>
+API Guide
+  </h1>
+</div>
+<p>All endpoints except the <code>/setup</code> and <code>/authenticate</code> need an access token.</p>
+<p>The access token can be passed in the following ways</p>
+<p><code>x-access-token</code> in the request headers (recommended)</p>
+<p><code>token</code> as a URL param</p>
+<p><code>token</code> in the request body</p>
+<p>All responses follow a uniform structure across all endpoints.</p>
+<pre><code>{
+  &quot;error&quot;: {
+    &quot;error&quot;: &quot;boolean&quot;,
+    &quot;message&quot;: &quot;string&quot;
+  },
+  &quot;code&quot;: &quot;string&quot;,
+  &quot;data&quot;: {
+    // Contains the response data. Example: array or all topics for a GET /api/topics request
+  }
+}
+</code></pre>
+<p>Matterwiki database has 4 models/tables.</p>
+<ol>
+<li>Articles</li>
+<li>Topics</li>
+<li>Users</li>
+<li>Archives</li>
+</ol>
+<p>Here is a list of all the endpoints with the action they perform.</p>
+<div class="pilwrap" id="post-apisetup">
+  <h2>
+    <a href="#post-apisetup" name="post-apisetup" class="pilcrow"></a>
+POST <code>/api/setup</code>
+  </h2>
+</div>
+<p>Create the admin user with id=1.
+There is only one admin (as of now) who is identified with his ID.</p>
+<p><strong>Required Params:</strong></p>
+<pre><code>name
+
+about
+
+email
+
+password
+
+(the above keys should be present in the request body)
+
+Access Token
+</code></pre>
+<div class="pilwrap" id="post-apiauthenticate">
+  <h2>
+    <a href="#post-apiauthenticate" name="post-apiauthenticate" class="pilcrow"></a>
+POST <code>/api/authenticate</code>
+  </h2>
+</div>
+<p>Takes the user's email and password and returns the auth token.</p>
+<p><strong>Required Params:</strong></p>
+<pre><code>email
+
+password
+
+(the above keys should be present in the request body)
+</code></pre>
+<div class="pilwrap" id="get-apiusers-admin-only">
+  <h2>
+    <a href="#get-apiusers-admin-only" name="get-apiusers-admin-only" class="pilcrow"></a>
+GET <code>/api/users</code> (ADMIN ONLY)
+  </h2>
+</div>
+<p>Returns a list of all users.</p>
+<p><strong>Required Params:</strong></p>
+<p><code>Access Token</code></p>
+<div class="pilwrap" id="post-apiusers-admin-only">
+  <h2>
+    <a href="#post-apiusers-admin-only" name="post-apiusers-admin-only" class="pilcrow"></a>
+POST <code>/api/users</code> (ADMIN ONLY)
+  </h2>
+</div>
+<p>Takes the user's name, about, email and password and creates an account for that user.</p>
+<p><strong>Required Params:</strong></p>
+<pre><code>name
+
+about
+
+email
+
+password
+
+(the above keys should be present in the request body)
+
+Access Token
+</code></pre>
+<div class="pilwrap" id="put-apiusers-admin-only">
+  <h2>
+    <a href="#put-apiusers-admin-only" name="put-apiusers-admin-only" class="pilcrow"></a>
+PUT <code>/api/users</code> (ADMIN ONLY)
+  </h2>
+</div>
+<p>Takes the user's id, name, about, email and password and creates an account for that user.
+It first finds the user with the given ID and then updates its profile fields with the given values.</p>
+<p><strong>Required Params:</strong></p>
+<pre><code>id
+
+name
+
+about
+
+email
+
+password
+
+(the above keys should be present in the request body)
+
+Access Token
+</code></pre>
+<div class="pilwrap" id="delete-apiusers-admin-only">
+  <h2>
+    <a href="#delete-apiusers-admin-only" name="delete-apiusers-admin-only" class="pilcrow"></a>
+DELETE <code>/api/users</code> (ADMIN ONLY)
+  </h2>
+</div>
+<p>Takes a user id and deletes the user from the database.</p>
+<p><strong>Required Params:</strong></p>
+<pre><code>id
+
+(the above key should be present in the request body)
+
+Access Token
+</code></pre>
+<div class="pilwrap" id="get-apitopics">
+  <h2>
+    <a href="#get-apitopics" name="get-apitopics" class="pilcrow"></a>
+GET <code>/api/topics</code>
+  </h2>
+</div>
+<p>Returns a list of all topics in the database.</p>
+<p><strong>Required Params:</strong></p>
+<p><code>Access Token</code></p>
+<div class="pilwrap" id="post-apitopics-admin-only">
+  <h2>
+    <a href="#post-apitopics-admin-only" name="post-apitopics-admin-only" class="pilcrow"></a>
+POST <code>/api/topics</code> (ADMIN ONLY)
+  </h2>
+</div>
+<p>Takes the topic name and description and creates the topic in the database.</p>
+<p><strong>Required Params:</strong></p>
+<pre><code>name
+
+description
+
+(the above keys should be present in the request body)
+
+Access Token
+</code></pre>
+<div class="pilwrap" id="put-apitopics-admin-only">
+  <h2>
+    <a href="#put-apitopics-admin-only" name="put-apitopics-admin-only" class="pilcrow"></a>
+PUT <code>/api/topics</code> (ADMIN ONLY)
+  </h2>
+</div>
+<p>Takes the topic id, name, about, email and password.
+It first finds the topic with the given ID and then updates its profile fields with the given values.</p>
+<p><strong>Required Params:</strong></p>
+<pre><code>id
+
+name
+
+description
+
+(the above keys should be present in the request body)
+
+Access Token
+</code></pre>
+<div class="pilwrap" id="delete-apitopics-admin-only">
+  <h2>
+    <a href="#delete-apitopics-admin-only" name="delete-apitopics-admin-only" class="pilcrow"></a>
+DELETE <code>/api/topics</code> (ADMIN ONLY)
+  </h2>
+</div>
+<p>Takes the id of the topic which has to deleted.</p>
+<p><strong>Required Params:</strong></p>
+<pre><code>id
+
+(the above key should be present in the request body)
+
+Access Token
+</code></pre>
+<div class="pilwrap" id="get-apitopics-idarticles">
+  <h2>
+    <a href="#get-apitopics-idarticles" name="get-apitopics-idarticles" class="pilcrow"></a>
+GET <code>/api/topics/:id/articles</code>
+  </h2>
+</div>
+<p>Returns the list of all the articles filed under the topic with id.
+Replace <code>:id</code> in the URL with the id of the topic you want to get the articles of.</p>
+<p><strong>Required Params:</strong></p>
+<pre><code>id (topic ID in URL)
+
+Access Token
+</code></pre>
+<div class="pilwrap" id="get-apiarchives-id">
+  <h2>
+    <a href="#get-apiarchives-id" name="get-apiarchives-id" class="pilcrow"></a>
+GET <code>/api/archives/:id</code>
+  </h2>
+</div>
+<p>Returns the archive with the given id.
+Replace <code>:id</code> in the URL with the id of the archive you want to get.</p>
+<p><strong>Required Params:</strong></p>
+<pre><code>id (archive ID in URL)
+
+Access Token
+</code></pre>
+<div class="pilwrap" id="get-apiarticles">
+  <h2>
+    <a href="#get-apiarticles" name="get-apiarticles" class="pilcrow"></a>
+GET <code>/api/articles</code>
+  </h2>
+</div>
+<p>Returns all the articles in the database</p>
+<p><strong>Required Params:</strong></p>
+<p><code>Access Token</code></p>
+<div class="pilwrap" id="post-apiarticles">
+  <h2>
+    <a href="#post-apiarticles" name="post-apiarticles" class="pilcrow"></a>
+POST <code>/api/articles</code>
+  </h2>
+</div>
+<p>Takes the article title, body, topic_id and user_id and creates the record in the database.</p>
+<p><strong>Required Params:</strong></p>
+<pre><code>title
+
+body
+
+topic_id
+
+user_id
+
+(the above keys should be present in the request body)
+
+Access Token
+</code></pre>
+<div class="pilwrap" id="put-apiarticles">
+  <h2>
+    <a href="#put-apiarticles" name="put-apiarticles" class="pilcrow"></a>
+PUT <code>/api/articles</code>
+  </h2>
+</div>
+<p>Takes the article id, title, body, topic_id, user_id.
+It first finds the topic with the given ID and then updates its fields with the given values.</p>
+<p><strong>Required Params:</strong></p>
+<pre><code>id
+
+title
+
+body
+
+topic_id
+
+user_id
+
+(the above keys should be present in the request body)
+
+Access Token
+</code></pre>
+<div class="pilwrap" id="delete-apiarticles-admin-only">
+  <h2>
+    <a href="#delete-apiarticles-admin-only" name="delete-apiarticles-admin-only" class="pilcrow"></a>
+DELETE <code>/api/articles</code> (ADMIN ONLY)
+  </h2>
+</div>
+<p>Takes the id of the topic which has to be deleted and removes that entry from the database.</p>
+<p><strong>Required Params:</strong></p>
+<pre><code>id
+
+(the above key should be present in the request body)
+
+Access Token
+</code></pre>
+<div class="pilwrap" id="get-apiarticles-id">
+  <h2>
+    <a href="#get-apiarticles-id" name="get-apiarticles-id" class="pilcrow"></a>
+GET <code>/api/articles/:id</code>
+  </h2>
+</div>
+<p>Returns the article with the given id.
+Replace :id in the URL with the id of the article you want to get.</p>
+<p><strong>Required Params:</strong></p>
+<pre><code>id (archive ID in URL)
+
+Access Token
+</code></pre>
+<div class="pilwrap" id="get-apiarticles-idhistory">
+  <h2>
+    <a href="#get-apiarticles-idhistory" name="get-apiarticles-idhistory" class="pilcrow"></a>
+GET <code>/api/articles/:id/history</code>
+  </h2>
+</div>
+<p>Returns all the previous versions of the article with the given id.
+Replace :id in the URL with the id of the article you want to get.</p>
+<p><strong>Required Params:</strong></p>
+<pre><code>id (article ID in URL)
+
+Access Token
+</code></pre>
+<div class="pilwrap" id="post-apilogo-admin-only">
+  <h2>
+    <a href="#post-apilogo-admin-only" name="post-apilogo-admin-only" class="pilcrow"></a>
+POST <code>/api/logo</code> (ADMIN ONLY)
+  </h2>
+</div>
+<p>Takes an image as a file and the access token of the user.
+If the user is an admin, updates the logo image in the assets folder with the new image.
+Else, returns an error.</p>
+<p><strong>Required Params:</strong></p>
+<pre><code>Logo File
+
+Access Token
+</code></pre>
+</div>
+  </div>
+</body>
+</html>

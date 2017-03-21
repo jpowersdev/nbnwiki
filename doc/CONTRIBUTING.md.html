@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CONTRIBUTING.md</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = "";
+    var thisFile = "CONTRIBUTING.md";
+    var defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+      <div class="heading h1">
+        <a href="#contributing-to-matterwiki">Contributing to Matterwiki</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#basic-guidelines-for-contributing">Basic guidelines for contributing</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#local-dev-setup">Local dev setup</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#the-code">The code</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#features">Features</a>
+      </div>
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container">
+    <div class="docs markdown"><div class="pilwrap" id="contributing-to-matterwiki">
+  <h1>
+    <a href="#contributing-to-matterwiki" name="contributing-to-matterwiki" class="pilcrow"></a>
+Contributing to Matterwiki
+  </h1>
+</div>
+<p>Thank you for taking the time to contribute! :tada::+1:</p>
+<div class="pilwrap" id="basic-guidelines-for-contributing">
+  <h2>
+    <a href="#basic-guidelines-for-contributing" name="basic-guidelines-for-contributing" class="pilcrow"></a>
+Basic guidelines for contributing
+  </h2>
+</div>
+<ul>
+<li>Start off by <a href="https://github.com/Matterwiki/Matterwiki#fork-destination-box">forking this repository</a>.</li>
+<li>Create a branch to start your work <code>git checkout -b your-feature-name</code></li>
+<li>Commit your work</li>
+<li>Create a pull request</li>
+</ul>
+<div class="pilwrap" id="local-dev-setup">
+  <h2>
+    <a href="#local-dev-setup" name="local-dev-setup" class="pilcrow"></a>
+Local dev setup
+  </h2>
+</div>
+<ul>
+<li>Once you've forked this repo and <code>clone</code>d your fork, you would have to run <code>npm install</code>.</li>
+<li>The development server can then be started with <code>npm run dev</code>  which serves the JS files, assets and of course, index.html. The default <code>localhost</code> URL is <a href="http://localhost:5000"><code>http://localhost:5000</code></a>.</li>
+<li>For the production version, run <code>npm start</code>.</li>
+</ul>
+<div class="pilwrap" id="the-code">
+  <h2>
+    <a href="#the-code" name="the-code" class="pilcrow"></a>
+The code
+  </h2>
+</div>
+<ul>
+<li>The <code>api/</code> directory contains code for the node backend. <a href="https://github.com/matterwiki/matterwiki/blob/master/API.md">Look at the API guide for more information</a>.</li>
+<li>The <code>client/</code> directory contains the React <code>jsx</code> files and basically all the frontend code powering this app.</li>
+<li>The <code>models/</code> directory has the bookshelf models associated with the SQLite DB.</li>
+</ul>
+<div class="pilwrap" id="features">
+  <h2>
+    <a href="#features" name="features" class="pilcrow"></a>
+Features
+  </h2>
+</div>
+<ul>
+<li>
+<p>The dev setup has webpack's Hot Module Replacement (HMR) enabled, which (<a href="https://webpack.js.org/concepts/hot-module-replacement/">according to the docs</a>),</p>
+<blockquote>
+<p>exchanges, adds, or removes modules while an application is running without a page reload.</p>
+</blockquote>
+<p>This helps improve speedup dev time significantly.</p>
+</li>
+<li>
+<p>We've got sourcemaps enabled, so that makes debugging really easy.</p>
+</li>
+</ul>
+</div>
+  </div>
+</body>
+</html>

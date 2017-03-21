@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>index.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = "";
+    var thisFile = "index.js";
+    var defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container">
+    <div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+    
+      <tr>
+        <td class="docs">
+          <h1>index.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+    
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This is main file which will contain all of our endpoints.
+Once we have enough endpoints defined we start breaking them into modules for better code readability</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2"></a>
+</div>
+<p>Importing all the required libraries</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-keyword">var</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">var</span> bodyParser = <span class="hljs-built_in">require</span>(<span class="hljs-string">'body-parser'</span>); <span class="hljs-comment">//body parser to parse the request body</span>
+<span class="hljs-keyword">var</span> db = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./db.js'</span>); <span class="hljs-comment">//this file contains the knex file import. it's equal to knex=require('knex')</span>
+<span class="hljs-keyword">var</span> app = express();
+<span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
+<span class="hljs-keyword">var</span> apiRoutes = express.Router();
+<span class="hljs-keyword">var</span> apiRoutesAdmin = express.Router();
+<span class="hljs-keyword">var</span> jwt = <span class="hljs-built_in">require</span>(<span class="hljs-string">'jsonwebtoken'</span>);
+<span class="hljs-keyword">var</span> misc = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./misc.js'</span>);
+<span class="hljs-keyword">var</span> config = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./config'</span>); <span class="hljs-comment">//config file in the app directory which contains the JWT key</span>
+
+process.env.PORT = process.env.PORT || <span class="hljs-number">5000</span>;
+
+<span class="hljs-built_in">console</span>.log(process.env.NODE_ENV);
+
+<span class="hljs-keyword">if</span>(process.env.NODE_ENV !== <span class="hljs-string">'production'</span>) {
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3"></a>
+</div>
+<p>add some patchwork for the devserver to work!</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">  <span class="hljs-built_in">require</span>(<span class="hljs-string">'./webpack-middleware'</span>)(app);
+}
+
+app.set(<span class="hljs-string">'superSecret'</span>, config.auth_secret); <span class="hljs-comment">// secret variable</span>
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4"></a>
+</div>
+<p>Using the body parser middleware to parse request body</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">app.use(bodyParser.urlencoded({ <span class="hljs-attr">extended</span>: <span class="hljs-literal">true</span> }));
+app.use(bodyParser.json());
+
+
+app.get(<span class="hljs-string">'/api'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5"></a>
+</div>
+<p>this is just a sample endpoint I build to see if things are working</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">  res.send(<span class="hljs-string">"Hey! You're looking at the matterwiki API"</span>);
+});
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6"></a>
+</div>
+<p>Importing all endpoints for authentication</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">'./api/authentication'</span>)(app);
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7"></a>
+</div>
+<p>Importing the setup endpoint</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">'./api/setup'</span>)(app);
+
+apiRoutes.use(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, res, next</span>) </span>{
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8"></a>
+</div>
+<p>check header or url parameters or post parameters for token</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">  <span class="hljs-keyword">var</span> token = req.body.token || req.query.token || req.headers[<span class="hljs-string">'x-access-token'</span>];
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9"></a>
+</div>
+<p>decode token</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">  <span class="hljs-keyword">if</span> (token) {
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10"></a>
+</div>
+<p>verifies secret and checks for expiration</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    jwt.verify(token, app.get(<span class="hljs-string">'superSecret'</span>), <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, decoded</span>) </span>{
+      <span class="hljs-keyword">if</span> (err) {
+        <span class="hljs-keyword">return</span> res.json({
+          <span class="hljs-attr">error</span>: {
+            <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">message</span>: <span class="hljs-string">'Failed to authenticate token'</span>
+          },
+          <span class="hljs-attr">code</span>: <span class="hljs-string">'B101'</span>,
+          <span class="hljs-attr">data</span>: {
+
+          }
+        });
+      } <span class="hljs-keyword">else</span> {
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11"></a>
+</div>
+<p>if everything is good, save to request for use in other routes</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">        req.decoded = decoded;
+        next();
+      }
+    });
+
+  } <span class="hljs-keyword">else</span> {
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12"></a>
+</div>
+<p>if there is no token
+return an error</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-keyword">return</span> res.status(<span class="hljs-number">403</span>).json({
+      <span class="hljs-attr">error</span>: {
+        <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">message</span>: <span class="hljs-string">'No token provided'</span>
+      },
+      <span class="hljs-attr">code</span>: <span class="hljs-string">'B102'</span>,
+      <span class="hljs-attr">data</span>: {
+
+      }
+    });
+
+  }
+});
+
+
+apiRoutesAdmin.use(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, res, next</span>) </span>{
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13"></a>
+</div>
+<p>check header or url parameters or post parameters for token</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">  <span class="hljs-keyword">var</span> token = req.body.token || req.query.token || req.headers[<span class="hljs-string">'x-access-token'</span>];
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-14" id="section-14"></a>
+</div>
+<p>decode token</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">  <span class="hljs-keyword">if</span> (token) {
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15"></a>
+</div>
+<p>verifies secret and checks for expiration</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    jwt.verify(token, app.get(<span class="hljs-string">'superSecret'</span>), <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, decoded</span>) </span>{
+      <span class="hljs-keyword">if</span> (err) {
+        <span class="hljs-keyword">return</span> res.json({
+          <span class="hljs-attr">error</span>: {
+            <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">message</span>: <span class="hljs-string">'Failed to authenticate token'</span>
+          },
+          <span class="hljs-attr">code</span>: <span class="hljs-string">'B101'</span>,
+          <span class="hljs-attr">data</span>: {
+
+          }
+        });
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">if</span>(decoded.grp == <span class="hljs-number">1</span>) {
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16"></a>
+</div>
+<p>if everything is good, save to request for use in other routes</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">          req.decoded = decoded;
+          next();
+        }
+        <span class="hljs-keyword">else</span> {
+          <span class="hljs-keyword">return</span> res.status(<span class="hljs-number">403</span>).json({
+            <span class="hljs-attr">error</span>: {
+              <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+              <span class="hljs-attr">message</span>: <span class="hljs-string">'You are not authorized to perform this action'</span>
+            },
+            <span class="hljs-attr">code</span>: <span class="hljs-string">'BNOTADMIN'</span>,
+            <span class="hljs-attr">data</span>: {
+
+            }
+          });
+        }
+      }
+    });
+
+  } <span class="hljs-keyword">else</span> {
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17"></a>
+</div>
+<p>if there is no token
+return an error</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-keyword">return</span> res.status(<span class="hljs-number">403</span>).json({
+      <span class="hljs-attr">error</span>: {
+        <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">message</span>: <span class="hljs-string">'No token provided'</span>
+      },
+      <span class="hljs-attr">code</span>: <span class="hljs-string">'B102'</span>,
+      <span class="hljs-attr">data</span>: {
+
+      }
+    });
+
+  }
+});
+
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18"></a>
+</div>
+<p>Importing all endpoints for articles</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">'./api/articles'</span>)(apiRoutes);
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-19" id="section-19"></a>
+</div>
+<p>Importing all endpoints for topics</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">'./api/topics'</span>)(apiRoutes);
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20"></a>
+</div>
+<p>Importing all endpoints for users</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">'./api/users'</span>)(apiRoutesAdmin);
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-21" id="section-21"></a>
+</div>
+<p>Importing all endpoints for archives</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">'./api/archives'</span>)(apiRoutes);
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-22" id="section-22"></a>
+</div>
+<p>Importing the search endpoint</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">'./api/search'</span>)(apiRoutes);
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-23" id="section-23"></a>
+</div>
+<p>Importing all endpoints which are only admin accessible</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">'./api/admin'</span>)(apiRoutesAdmin);
+
+
+app.use(<span class="hljs-string">'/api'</span>, apiRoutes);
+app.use(<span class="hljs-string">'/api'</span>, apiRoutesAdmin);
+
+app.use(express.static(__dirname + <span class="hljs-string">'/client'</span>));
+
+app.listen(process.env.PORT, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"The magic is happening on port %s"</span>, process.env.PORT);
+});
+
+</pre>
+        </td>
+      </tr>
+    
+  </tbody>
+</table>
+
+  </div>
+</body>
+</html>

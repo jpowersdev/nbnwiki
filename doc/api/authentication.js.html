@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>authentication.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../";
+    var thisFile = "api/authentication.js";
+    var defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container">
+    <div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+    
+      <tr>
+        <td class="docs">
+          <h1>authentication.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+    
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This file contains all the endpoints related to user authentication.
+For the method we use to categorize endpoints in file please read the top
+comment in the articles.js (same directory).</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2"></a>
+</div>
+<p>Importing the topics model</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-keyword">var</span> Users = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../models/user.js'</span>);
+<span class="hljs-keyword">var</span> jwt    = <span class="hljs-built_in">require</span>(<span class="hljs-string">'jsonwebtoken'</span>); <span class="hljs-comment">// used to create, sign, and verify tokens</span>
+<span class="hljs-keyword">var</span> bcrypt = <span class="hljs-built_in">require</span>(<span class="hljs-string">'bcryptjs'</span>);
+<span class="hljs-keyword">const</span> saltRounds = <span class="hljs-number">10</span>;
+<span class="hljs-keyword">var</span> db = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../db.js'</span>); <span class="hljs-comment">//this file contains the knex file import. it's equal to knex=require('knex')</span>
+
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">app</span>) </span>{
+
+
+  app.post(<span class="hljs-string">'/api/authenticate'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This is a POST endpoint that takes the email and password and returns the JWT
+the token is present in the token key in the data object.
+the error key in the returning object is a boolen which is false if there is no error and true otherwise</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    Users.forge({<span class="hljs-attr">email</span>: req.body.email})
+    .fetch()
+      .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">user</span>) </span>{
+        <span class="hljs-keyword">if</span>(!user){
+          res.json({
+            <span class="hljs-attr">error</span>: {
+              <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+              <span class="hljs-attr">message</span>: <span class="hljs-string">'User not found'</span>
+            },
+            <span class="hljs-attr">code</span>: <span class="hljs-string">'B117'</span>,
+            <span class="hljs-attr">data</span>: {
+
+            }
+          });
+        }
+        <span class="hljs-keyword">else</span> {
+          user = user.toJSON();
+          bcrypt.compare(req.body.password, user.password, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, result</span>) </span>{
+              <span class="hljs-keyword">if</span>(result==<span class="hljs-literal">true</span>)
+              {
+                <span class="hljs-keyword">var</span> token = jwt.sign(user, app.get(<span class="hljs-string">'superSecret'</span>), {
+                              <span class="hljs-attr">expiresIn</span>: <span class="hljs-number">86400</span>
+                            });
+                res.json({
+                  <span class="hljs-attr">error</span>: {
+                    <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+                    <span class="hljs-attr">message</span>: <span class="hljs-string">''</span>
+                  },
+                  <span class="hljs-attr">code</span>: <span class="hljs-string">'B118'</span>,
+                  <span class="hljs-attr">data</span>: {
+                    <span class="hljs-attr">user</span>: {
+                      <span class="hljs-attr">email</span>: user.email,
+                      <span class="hljs-attr">id</span>: user.id,
+                      <span class="hljs-attr">grp</span>: user.grp
+                    },
+                    <span class="hljs-attr">token</span>: token
+                  }
+                });
+              }
+              <span class="hljs-keyword">else</span> {
+                res.json({
+                  <span class="hljs-attr">error</span>: {
+                    <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+                    <span class="hljs-attr">message</span>: <span class="hljs-string">'Email or Password is wrong'</span>
+                  },
+                  <span class="hljs-attr">code</span>: <span class="hljs-string">'B119'</span>,
+                  <span class="hljs-attr">data</span>: {
+
+                  }
+                });
+              }
+          });
+        }
+
+      })
+      .catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+        res.status(<span class="hljs-number">500</span>).json({
+          <span class="hljs-attr">error</span>: {
+            <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">message</span>: error.message
+          },
+          <span class="hljs-attr">code</span>: <span class="hljs-string">'B120'</span>,
+          <span class="hljs-attr">data</span>: {
+
+          }
+        });
+      });
+  });
+
+
+}
+
+</pre>
+        </td>
+      </tr>
+    
+  </tbody>
+</table>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>topics.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../";
+    var thisFile = "api/topics.js";
+    var defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container">
+    <div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+    
+      <tr>
+        <td class="docs">
+          <h1>topics.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+    
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This file contains all the endpoints related to topics.
+For the method we use to categorize endpoints in file please read the top
+comment in the articles.js (same directory).</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2"></a>
+</div>
+<p>Importing the topics model</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-keyword">var</span> Topics = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../models/topic.js'</span>);
+
+<span class="hljs-keyword">var</span> db = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../db.js'</span>); <span class="hljs-comment">//this file contains the knex file import. it's equal to knex=require('knex')</span>
+
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">app</span>) </span>{
+
+
+  app.get(<span class="hljs-string">'/topics'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This is a GET endpoint that responds with the list of all the topics in the topics table
+the topics are present in the data object in the returning object.
+the error key in the returning object is a boolen which is false if there is no error and true otherwise</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    Topics.forge()
+    .fetchAll()
+      .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">collection</span>) </span>{
+        res.json({
+          <span class="hljs-attr">error</span>: {
+            <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">message</span>: <span class="hljs-string">''</span>
+          },
+          <span class="hljs-attr">code</span>: <span class="hljs-string">'B123'</span>,
+          <span class="hljs-attr">data</span>: collection.toJSON()
+        });
+      })
+      .catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+        res.status(<span class="hljs-number">500</span>).json({
+          <span class="hljs-attr">error</span>: {
+            <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">message</span>: error.message
+          },
+          <span class="hljs-attr">code</span>: <span class="hljs-string">'B124'</span>,
+          <span class="hljs-attr">data</span>: {
+
+          }
+        });
+      });
+  });
+
+
+  app.get(<span class="hljs-string">'/topics/:id'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This is a GET endpoint that responds with the topic which has the given ID
+the topic is present in the data object in the returning object.
+the error key in the returning object is a boolen which is false if there is no error and true otherwise</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">      Topics.forge({<span class="hljs-attr">id</span>: req.params.id})
+      .fetch()
+        .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">topic</span>) </span>{
+          res.json({
+            <span class="hljs-attr">error</span>: {
+              <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+              <span class="hljs-attr">message</span>: <span class="hljs-string">''</span>
+            },
+            <span class="hljs-attr">code</span>: <span class="hljs-string">'B123'</span>,
+            <span class="hljs-attr">data</span>: topic.toJSON()
+          });
+        })
+        .catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+          res.status(<span class="hljs-number">500</span>).json({
+            <span class="hljs-attr">error</span>: {
+              <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+              <span class="hljs-attr">message</span>: error.message
+            },
+            <span class="hljs-attr">code</span>: <span class="hljs-string">'B124'</span>,
+            <span class="hljs-attr">data</span>: {
+
+            }
+          });
+        });
+    });
+
+
+  app.get(<span class="hljs-string">'/topic/:id/articles'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)</span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5"></a>
+</div>
+<div class="dox">
+<div class="summary">
+<p>This is a GET endpoint that responds with the list of all the articles that belong to a particular topic (topic of given id param)
+the articles are present in the data object in the returning object.
+the error key in the returning object is a boolen which is false if there is no error and true otherwise</p>
+</div>
+<div class="body">
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    Topics.where({<span class="hljs-attr">id</span>: req.params.id}).fetch({<span class="hljs-attr">withRelated</span>: [{<span class="hljs-string">'articles'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">qb</span>) </span>{
+            <span class="hljs-keyword">if</span>(req.query.count)
+                qb.limit(req.query.count);
+             qb.orderBy(<span class="hljs-string">"updated_at"</span>,<span class="hljs-string">"DESC"</span>);
+         }}]}).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">topic</span>) </span>{
+      res.status(<span class="hljs-number">200</span>).json({
+        <span class="hljs-attr">error</span>: {
+          <span class="hljs-attr">error</span>: <span class="hljs-literal">false</span>,
+          <span class="hljs-attr">message</span>: <span class="hljs-string">''</span>
+        },
+        <span class="hljs-attr">code</span>: <span class="hljs-string">'B129'</span>,
+        <span class="hljs-attr">data</span>: topic.related(<span class="hljs-string">'articles'</span>)
+      });
+    })
+    .catch(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>)</span>{
+      res.status(<span class="hljs-number">500</span>).json({
+        <span class="hljs-attr">error</span>: {
+          <span class="hljs-attr">error</span>: <span class="hljs-literal">true</span>,
+          <span class="hljs-attr">message</span>: error.message
+        },
+        <span class="hljs-attr">code</span>: <span class="hljs-string">'B130'</span>,
+        <span class="hljs-attr">data</span>: {
+
+        }
+      })
+    });
+  });
+
+
+}
+
+</pre>
+        </td>
+      </tr>
+    
+  </tbody>
+</table>
+
+  </div>
+</body>
+</html>

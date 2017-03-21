@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>webpack.config.prod.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = "";
+    var thisFile = "webpack.config.prod.js";
+    var defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container">
+    <div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+    
+      <tr>
+        <td class="docs">
+          <h1>webpack.config.prod.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+    
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1"></a>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-keyword">const</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">'webpack'</span>);
+<span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+
+<span class="hljs-keyword">const</span> BUILD_DIR = path.resolve(__dirname, <span class="hljs-string">'client/public'</span>);
+<span class="hljs-keyword">const</span> APP_DIR = path.resolve(__dirname, <span class="hljs-string">'client/app'</span>);
+
+<span class="hljs-built_in">module</span>.exports = {
+  <span class="hljs-attr">entry</span>: [    
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2"></a>
+</div>
+<p>polyfill for fetch API (Safari)
+TODO a better way to handle this, maybe?</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-string">'whatwg-fetch'</span>, 
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3"></a>
+</div>
+<p>entry point</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    APP_DIR + <span class="hljs-string">'/index.jsx'</span>
+  ],
+  <span class="hljs-attr">output</span>: {
+    <span class="hljs-attr">path</span>: BUILD_DIR,
+    <span class="hljs-attr">filename</span>: <span class="hljs-string">'bundle.js'</span>,
+    <span class="hljs-attr">publicPath</span> : BUILD_DIR
+  },
+  <span class="hljs-attr">devtool</span> : <span class="hljs-string">'source-map'</span>,
+  <span class="hljs-attr">module</span> : {
+    <span class="hljs-attr">loaders</span> : [
+      {
+        <span class="hljs-attr">test</span> : <span class="hljs-regexp">/\.jsx?/</span>,
+        <span class="hljs-attr">loader</span> : <span class="hljs-string">'babel-loader'</span>,
+        <span class="hljs-attr">include</span> : APP_DIR,
+        <span class="hljs-attr">exclude</span> : <span class="hljs-regexp">/node_modules/</span> ,
+        <span class="hljs-attr">query</span>: {
+          <span class="hljs-attr">presets</span>: [<span class="hljs-string">'es2015'</span>, <span class="hljs-string">'react'</span>]
+        }
+      }
+    ]
+  },
+  <span class="hljs-attr">plugins</span>: [
+    <span class="hljs-keyword">new</span> webpack.optimize.UglifyJsPlugin({
+      <span class="hljs-attr">minimize</span> : <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">compress</span>: {
+          <span class="hljs-attr">warnings</span>: <span class="hljs-literal">false</span>
+      }
+    }),
+    <span class="hljs-keyword">new</span> webpack.DefinePlugin({
+      <span class="hljs-string">'process.env.NODE_ENV'</span>: <span class="hljs-built_in">JSON</span>.stringify(process.env.NODE_ENV)
+    })
+  ]
+};
+</pre>
+        </td>
+      </tr>
+    
+  </tbody>
+</table>
+
+  </div>
+</body>
+</html>

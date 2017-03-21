@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>README.md</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = "";
+    var thisFile = "README.md";
+    var defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+      <div class="heading h2">
+        <a href="#what-is-a-wiki">What is a wiki?</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#why-do-you-need-a-wiki">Why do you need a wiki?</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#why-matterwiki">Why Matterwiki?</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#setup-instructions">Setup Instructions:</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#run-with-docker">Run with Docker:</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#under-the-hood">Under the hood</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#like-it">Like it?</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#found-a-bug">Found a bug?</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#want-to-contribute">Want to contribute?</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#feature-requests">Feature requests?</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#screenshots">Screenshots</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#prior-art">Prior art</a>
+      </div>
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container">
+    <div class="docs markdown"><img src="https://github.com/Matterwiki/matterwiki.github.io/blob/master/assets/logo-header.png?raw=true" />
+<hr/>
+<div class="pilwrap" id="what-is-a-wiki">
+  <h2>
+    <a href="#what-is-a-wiki" name="what-is-a-wiki" class="pilcrow"></a>
+What is a wiki?
+  </h2>
+</div>
+<p>A website or database developed collaboratively by a community of users, allowing any user to add and edit content. Example: Wikipedia</p>
+<div class="pilwrap" id="why-do-you-need-a-wiki">
+  <h2>
+    <a href="#why-do-you-need-a-wiki" name="why-do-you-need-a-wiki" class="pilcrow"></a>
+Why do you need a wiki?
+  </h2>
+</div>
+<p>As your company grows it becomes difficult to keep track of all the knowledge in your team. It is difficult to communicate every detail about the company policies to new team members. Things get lost in Slack channels. It becomes difficult to keep things in context.</p>
+<p>A wiki helps you keep track of all this information. Every article is filed under a topic to keep things organised among departments. Everything is transparent, who made what changes to which document and when.</p>
+<div class="pilwrap" id="why-matterwiki">
+  <h2>
+    <a href="#why-matterwiki" name="why-matterwiki" class="pilcrow"></a>
+Why Matterwiki?
+  </h2>
+</div>
+<p>Wiki softwares are too complicated for small teams. Matterwiki is just that, a simple wiki for teams to store and collaborate on knowledge.
+People use it to store documentation, notes, culture guidelines, employee onboarding content and everything else they want to.</p>
+<div class="pilwrap" id="setup-instructions">
+  <h2>
+    <a href="#setup-instructions" name="setup-instructions" class="pilcrow"></a>
+Setup Instructions:
+  </h2>
+</div>
+<p>You need to have <code>Node</code> and <code>npm</code> installed on your system.</p>
+<ol>
+<li>Clone this repository <code>git clone http://github.com/matterwiki/matterwiki</code></li>
+<li>Run <code>npm install</code></li>
+<li>Edit <code>config.js</code> (present in the project root) and change the <code>auth_secret</code> value with any secret phrase.
+<strong>NOTE: This phrase will be used to encode and decode your access tokens. Keep it safe and private</strong></li>
+<li>run <code>npm run build</code></li>
+<li>At this point, running this with a process manager like <a href="http://pm2.keymetrics.io/">PM2</a> would ensure that this is a background process and doesn't die out.  A sample way of starting the app would be:</li>
+</ol>
+<pre><code>NODE_ENV=production PORT=8000 pm2 start index.js --name &quot;matterwiki&quot;
+</code></pre>
+<p>Some points to note here :</p>
+<ul>
+<li><code>NODE_ENV</code> could take one of these two values, <code>dev</code> or <code>production</code>.</li>
+<li><code>PORT</code> is optional. If it is not specified, then <code>5000</code> would be used.</li>
+</ul>
+<p>However, if you do not need all this, running <code>npm start</code> should boot up the production build of the app.</p>
+<ol start="6">
+<li>Head to <code>yoururl.com/#/setup</code> and create the Admin account.</li>
+</ol>
+<p><em>Replace yoururl.com with your URL. If you're running locally, replace with <code>localhost:5000</code></em></p>
+<ol start="7">
+<li>Login with your new admin account and head to the Admin dashboard.</li>
+<li>Create topics and add users to your Wiki.</li>
+</ol>
+<p><strong>NOTE - Using MySQL</strong></p>
+<hr/>
+By default Matterwiki uses **Sqlite**, which is a lightweight database management system perfect for an internal wiki.
+If your team size is huge and you need a concurrent and flexible DBMS you can change the config to use **MySQL**.
+As we use `Knex` as a query builder all you have to do use MySQL is to change the db object in `knexfile.js` (found the app root directory).
+<ol>
+<li>
+<p>First <a href="http://dev.mysql.com/doc/mysql-getting-started/en/#mysql-getting-started-installing">setup MySQL</a></p>
+</li>
+<li>
+<p>Install mysql from <code>npm</code></p>
+<pre><code>npm install mysql
+</code></pre>
+</li>
+<li>
+<p>Change the object from</p>
+</li>
+</ol>
+<pre><code>module.exports = {
+  client: 'sqlite3',
+  connection: {
+    filename: &quot;./db/matterwiki.sqlite&quot;
+  },
+  useNullAsDefault: true
+}
+</code></pre>
+<p>to</p>
+<pre><code>module.exports = {
+  client: 'mysql',
+  connection: {
+    host : '127.0.0.1',
+    user : 'your_database_user',
+    password : 'your_database_password',
+    database : 'myapp_test'
+  },
+  useNullAsDefault: true
+}
+</code></pre>
+<div class="pilwrap" id="run-with-docker">
+  <h2>
+    <a href="#run-with-docker" name="run-with-docker" class="pilcrow"></a>
+Run with Docker:
+  </h2>
+</div>
+<p>You can run MatterWiki with Docker.</p>
+<ol>
+<li>Clone this repository <code>git clone http://github.com/matterwiki/matterwiki</code></li>
+<li>Run <code>docker build -t matterwiki .</code></li>
+<li>Start a docker container with <code>docker run --name=matterwiki -p 5000:5000 matterwiki</code></li>
+</ol>
+<p>You can add <code>-v /&lt;path&gt;/db:/server/db</code> to store the db on the host filesystem, and <code>-v /&lt;path&gt;/config.js:/server/config.js</code>
+to specify your own JWT secret configuration. Add <code>--restart=always -d</code> options to run it as a daemon.</p>
+<div class="pilwrap" id="under-the-hood">
+  <h2>
+    <a href="#under-the-hood" name="under-the-hood" class="pilcrow"></a>
+Under the hood
+  </h2>
+</div>
+<p>Matterwiki uses a Node.js API with a React.js front-end and Sqlite3 for the database.</p>
+<img src="https://github.com/Matterwiki/matterwiki.github.io/blob/master/assets/technologies.png?raw=true" />
+<p>As the app is built atop a JSON API, it is simple to integrate your Wiki with your mobile app or blog.
+For more, read the <a href="https://github.com/matterwiki/matterwiki/blob/master/API.md">API documentation</a>.</p>
+<div class="pilwrap" id="like-it">
+  <h2>
+    <a href="#like-it" name="like-it" class="pilcrow"></a>
+Like it?
+  </h2>
+</div>
+<p>:star: this repo</p>
+<div class="pilwrap" id="found-a-bug">
+  <h2>
+    <a href="#found-a-bug" name="found-a-bug" class="pilcrow"></a>
+Found a bug?
+  </h2>
+</div>
+<p>Raise an issue!</p>
+<div class="pilwrap" id="want-to-contribute">
+  <h2>
+    <a href="#want-to-contribute" name="want-to-contribute" class="pilcrow"></a>
+Want to contribute?
+  </h2>
+</div>
+<p>We welcome all kinds of contributions. It doesn't matter if it's a grammar fix, or some refactoring, or an even an entire UI overhaul. So help us improve Matterwiki for everyone. Take a look at our <a href="https://github.com/Matterwiki/Matterwiki/blob/master/CONTRIBUTING.md">contributing document</a> for understanding local development setup and the code base.</p>
+<div class="pilwrap" id="feature-requests">
+  <h2>
+    <a href="#feature-requests" name="feature-requests" class="pilcrow"></a>
+Feature requests?
+  </h2>
+</div>
+<p>Before you create a new feature request please check our <a href="https://trello.com/b/OktmtAve/feature-roadmap">public roadmap</a>. It lists the features we're working on and the ones we will be working on.
+If you see we're already working on your feature, head to the issue relating to that and give a thumbs up.
+If your feature is something that hasn't been requested yet, please create an issue.</p>
+<div class="pilwrap" id="screenshots">
+  <h2>
+    <a href="#screenshots" name="screenshots" class="pilcrow"></a>
+Screenshots
+  </h2>
+</div>
+<img src="https://github.com/Matterwiki/matterwiki.github.io/blob/master/assets/screenshot1.png?raw=true" />
+<hr/>
+<img src="https://github.com/Matterwiki/matterwiki.github.io/blob/master/assets/screenshot2.png?raw=true" />
+<hr/>
+<img src="https://github.com/Matterwiki/matterwiki.github.io/blob/master/assets/screenshot3.png?raw=true" />
+<hr/>
+<img src="https://github.com/Matterwiki/matterwiki.github.io/blob/master/assets/screenshot4.png?raw=true" />
+<hr/>
+<img src="https://github.com/Matterwiki/matterwiki.github.io/blob/master/assets/footer-img.png?raw=true" />
+<div class="pilwrap" id="prior-art">
+  <h2>
+    <a href="#prior-art" name="prior-art" class="pilcrow"></a>
+Prior art
+  </h2>
+</div>
+<p>If you want to explore alternatives here are some other Wikis we love.</p>
+<p><em>We're also referring to them for inspiration as we go along.</em></p>
+<ol>
+<li><a href="https://tettra.co">Tettra</a>, another simple wiki (comes with Slack integration) [PAID].</li>
+<li><a href="https://github.com/claudioc/jingo">Jingo</a>, another Node.js based Wiki based on Git.</li>
+<li><a href="https://www.mediawiki.org/wiki/MediaWiki">MediaWiki</a>, the code that powers Wikipedia.</li>
+<li><a href="https://www.dokuwiki.org/">Dokuwiki</a>, simple text file based wiki</li>
+</ol>
+</div>
+  </div>
+</body>
+</html>
