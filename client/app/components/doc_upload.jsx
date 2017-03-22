@@ -30,13 +30,24 @@ class DocUpload extends React.Component {
         Alert.error(response.error.message);
       }
       else {
-        var fname = response.file.name;
-        var fid = response.file.id;
-        var fdata = new FormData();
-        fdata.append('name', response.file.name);
-        fdata.append('path', response.file.path);
-        myInit.body = fdata;
-        fetch('/api/docs/',myInit)
+        //Alert.success("Made it to the drive");
+        var file = response.data.file;
+        var name = file.originalname;
+        var path = './client/docs/' + name;
+
+        var fileData = new FormData();
+        fileData.append('name', name);
+        fileData.append('path', path);
+
+        var fileHeaders = new Headers({
+          "x-access-token": window.localStorage.getItem('userToken')});
+        
+        var fileInit = { method: 'POST',
+                      headers: fileHeaders,
+                      body: fileData
+                    };
+
+        fetch('/api/docs/',fileInit)
         .then(function(response) {
           return response.json();
         })
@@ -45,9 +56,8 @@ class DocUpload extends React.Component {
             Alert.error(response.error.message);
           }
           else {
-            Alert.success(fname+" successfully uploaded!" + fid);
+            Alert.success(name+" successfully uploaded to "+path);
             $('#docUpload').modal('hide');
-            //updateWindow(response.file);
           }
         });
       }

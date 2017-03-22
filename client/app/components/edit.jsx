@@ -2,14 +2,14 @@ import React from 'react';
 import {hashHistory} from 'react-router';
 import Alert from 'react-s-alert';
 import Loader from './loader.jsx';
-import DocUpload from './doc_upload.jsx';
 
 class EditArticle extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = {body: "",title: "", topic_id: "", topics: [], loading: true};
+    this.handleUpload = this.handleUpload.bind(this);
+    this.state = {body: "",title: "", topic_id: "", topics: [], docs: [], loading: true};
   }
 
   handleChange() {
@@ -48,6 +48,64 @@ class EditArticle extends React.Component {
     else {
       Alert.error("Article Body, Title, Topic and Change Info is required.");
     }
+  }
+
+  handleUpload(e) {
+    e.preventDefault();
+    var doc = this.refs.doc.files[0];
+    var formData = new FormData();
+    formData.append('doc', doc);
+    var myHeaders = new Headers({
+        "x-access-token": window.localStorage.getItem('userToken')
+    });
+    var myInit = { method: 'POST',
+                headers: myHeaders,
+               body: formData
+               };
+    var that = this;
+    fetch('/api/docfiles/',myInit)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(response) {
+      if(response.error.error) {
+        Alert.error(response.error.message);
+      }
+      else {
+        var file = response.data.file;
+        var name = file.originalname;
+        var path = './client/docs/' + name;
+
+        var fileData = new FormData();
+        fileData.append('name', name);
+        fileData.append('path', path);
+
+        var fileHeaders = new Headers({
+          "x-access-token": window.localStorage.getItem('userToken')});
+        
+        var fileInit = { method: 'POST',
+                      headers: fileHeaders,
+                      body: fileData
+                    };
+
+        fetch('/api/docs/',fileInit)
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(response) {
+          if(response.error.error) {
+            Alert.error(response.error.message);
+          }
+          else {
+            Alert.success(name+" successfully uploaded to "+path);
+            $('#docUpload').modal('hide');
+            this.setState({ 
+                docs: this.state.docs.concat([fileInit.body])
+            })
+          }
+        });
+      }
+    });
   }
 
 
@@ -113,8 +171,9 @@ class EditArticle extends React.Component {
            <div className="row">
             <div className="col-md-12 new-article-form">
               <trix-toolbar id="my_toolbar"></trix-toolbar>
-              <DocUpload />
-          <trix-editor toolbar="my_toolbar" input="my_input" placeholder="Start writing here...." class="input-body"></trix-editor>
+          <trix-editor toolbar="my_toolbar" input="my_input" placeholder="Start writing here...." class="input-body">
+            <div id="attachments"></div>        
+          </trix-editor>
           <input id="my_input" type="hidden" value={this.state.body} ref="body" onChange={this.handleChange}/>
                  <br/>
                  <label>Choose topic</label>
@@ -133,13 +192,34 @@ class EditArticle extends React.Component {
                   <p className="help-block">Keep it short and descriptive :)</p>
                   <br/>
             </div>
-
-        <div className="row">
-          <div className="col-md-12">
-            <button className="btn btn-default btn-block btn-lg" onClick={this.handleSubmit}>Update Article</button>
+            <div id="docUpload" className="modal fade" tabindex="-1" role="dialog" aria-labelledby="docUploadLabel" aria-hidden="true">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;  </button>
+                  <h4 className="modal-title" id="docUploadLabel">Select a Document</h4>
+                </div>
+                <div className="modal-body">
+                  <h4>Upload a New Document</h4>
+                  <form method="POST" encType="multipart/form-data" onSubmit={this.handleUpload}>
+                      <input type="file" name="doc" ref="doc" className="form-control"/>
+                      <p>Please Select your File</p>
+                      <br/>
+                      <input type="submit" value="Upload Document" className="btn btn-default btn-block btn-lg"/>
+                  </form>
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12">
+              <button className="btn btn-default btn-block btn-lg" onClick={this.handleSubmit}>Update Article</button>
+            </div>
           </div>
         </div>
-      </div>
       </div>
       );
   }

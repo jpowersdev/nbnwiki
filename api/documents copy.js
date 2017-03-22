@@ -15,7 +15,7 @@ var upload = multer({ storage: storage }).single('doc');
 
 module.exports =  function(app){
 
-  app.post('/docs', function (req, res) {
+  app.post('/docfiles', function (req, res) {
       upload(req, res, function (err) {
           if(err) {
             res.json({
@@ -30,47 +30,16 @@ module.exports =  function(app){
             });
           }
           else {
-            if (req.file) {
+            res.json({
+              error: {
+                error: false,
+                message: ''
+              },
+              code: 'DOCUPLOADED',
+              data: {
 
-            Documents.forge().save({
-              name: req.file.filename,
-              path: req.file.path
-            }).then( function (doc) {
-              res.json({
-                error: {
-                  error: false,
-                  message: ''
-                },
-                code: 'B103',
-                data: {
-                  doc: doc
-                }
-              });     // responds back to request
-           })
-           .catch(function (error) {
-             res.status(500).json({
-               error: {
-                 error: true,
-                 message: error.message
-               },
-               code: 'B104',
-               data: {
-
-               }
-             });
-           });
-            } else {
-                res.status(500).json({
-                 error: {
-                   error: true,
-                   message: "No file in Request"
-                 },
-                 code: 'B104',
-                 data: {
-
-                 }
-               });
-            }
+              }
+            });
           }
       });
     });
@@ -103,7 +72,7 @@ module.exports =  function(app){
       });
     });
 
-  /*app.post('/docs',function(req,res){
+  app.post('/docs',function(req,res){
 
     Documents.forge().save({
         name: req.body.name
@@ -131,5 +100,5 @@ module.exports =  function(app){
        });
      });
   });
-*/
+
 }

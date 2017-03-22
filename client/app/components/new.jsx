@@ -2,14 +2,14 @@ import React from 'react';
 import {hashHistory} from 'react-router';
 import Loader from './loader.jsx';
 import Alert from 'react-s-alert';
-import DocUpload from './doc_upload.jsx';
 
 class NewArticle extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = {body: "", topics: [], error: "", loading: true};
+    this.handleUpload = this.handleUpload.bind(this);
+    this.state = {body: "", topics: [], docs: [], error: "", loading: true};
   }
 
   handleChange() {
@@ -39,9 +39,18 @@ class NewArticle extends React.Component {
     });
   }
 
+  attachments() {
+    var str = <div>;
+    foreach (var d in this.state.docs){
+      str += <a href={d.path}>{d.name}</a>;
+    }
+    str += </div>;
+    return str;
+  }
+
   handleSubmit(e) {
     e.preventDefault();
-    var body = this.refs.body.value;
+    var body = this.refs.body.value + attachments();
     var title = this.refs.title.value;
     var topicId = this.refs.topic.value;
     if(body && title && topicId) {
@@ -72,6 +81,38 @@ class NewArticle extends React.Component {
     }
   }
 
+  handleUpload(e) {
+    e.preventDefault();
+    var doc = this.refs.doc.files[0];
+    var formData = new FormData();
+    formData.append('doc', doc);
+    
+    var myHeaders = new Headers({
+        "x-access-token": window.localStorage.getItem('userToken'),
+    });
+    var myInit = { method: 'POST',
+                headers: myHeaders,
+               body: formData
+               };
+    var that = this;
+    fetch('/api/docs/',myInit)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(response) {
+      if(response.error.error) {
+        Alert.error(response.error.message);
+      }
+      else {
+        Alert.success(response.data.doc.name+" successfully uploaded to "+response.data.doc.path);
+        $('#docUpload').modal('hide');
+        that.setState({ 
+            docs: that.state.docs.concat([{name: doc.name, path: doc.path}])
+        })
+      }
+    });
+  }
+
   render() {
     if(this.state.loading)
       return <Loader/>;
@@ -88,19 +129,45 @@ class NewArticle extends React.Component {
          </div>
          </div>
          <br/>
+         <div id="docUpload" className="modal fade" tabindex="-1" role="dialog" aria-labelledby="docUploadLabel" aria-hidden="true">
+         <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;  </button>
+                <h4 className="modal-title" id="docUploadLabel">Select a Document</h4>
+              </div>
+              <div className="modal-body">
+                <h4>Upload a New Document</h4>
+                <form method="POST" encType="multipart/form-data" onSubmit={this.handleUpload}>
+                    <input type="file" name="doc" ref="doc" className="form-control"/>
+                    <p>Please Select your File</p>
+                    <br/>
+                    <input type="submit" value="Upload Document" className="btn btn-default btn-block btn-lg"/>
+                </form>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
          <div className="row">
           <div className="col-md-12 new-article-form">
             <trix-toolbar id="my_toolbar"></trix-toolbar>
-            <DocUpload />
-            <trix-editor toolbar="my_toolbar" input="my_input" placeholder="Start writing here...." class="input-body"></trix-editor>
+            <trix-editor toolbar="my_toolbar" input="my_input" placeholder="Start writing here...." class="input-body">
+            </trix-editor>
             <input id="my_input" type="hidden" value="" ref="body" onChange={this.handleChange}/>
-               <br/>
-               <label>Choose topic</label>
-               <select className="form-control topic-select" ref="topic">
-                 {this.state.topics.map(topic => (
-                   <option value={topic.id} key={topic.id}>{topic.name}</option>
-                 ))}
-               </select>
+             <br/>
+             <label>Attachments</label>
+             <ul className="list-group"> 
+              {this.state.docs.map((doc) => <li className="list-group-item"><a href={doc.path}>{doc.name}</a></li>)}
+             </ul>
+             <label>Choose topic</label>
+             <select className="form-control topic-select" ref="topic">
+               {this.state.topics.map(topic => (
+                 <option value={topic.id} key={topic.id}>{topic.name}</option>
+               ))}
+             </select>
           </div>
         </div>
         <br/>
