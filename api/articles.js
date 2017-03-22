@@ -214,8 +214,7 @@ module.exports =  function(app){
               id: userObj.id,
               name: userObj.name,
               email: userObj.email,
-              about: userObj.about,
-              grp: userObj.grp
+              about: userObj.about
             };
           })
         .then(function(){

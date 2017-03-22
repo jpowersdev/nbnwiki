@@ -2,6 +2,7 @@ import React from 'react';
 import {hashHistory} from 'react-router';
 import Loader from './loader.jsx';
 import Alert from 'react-s-alert';
+import DocUpload from './doc_upload.jsx';
 
 class NewArticle extends React.Component {
   constructor(props) {
@@ -74,7 +75,7 @@ class NewArticle extends React.Component {
   render() {
     if(this.state.loading)
       return <Loader/>;
-    else
+    else 
     return (
       <div className="new-article">
         <div className="row">
@@ -89,7 +90,8 @@ class NewArticle extends React.Component {
          <br/>
          <div className="row">
           <div className="col-md-12 new-article-form">
-                <trix-toolbar id="my_toolbar"></trix-toolbar>
+            <trix-toolbar id="my_toolbar"></trix-toolbar>
+            <DocUpload />
             <trix-editor toolbar="my_toolbar" input="my_input" placeholder="Start writing here...." class="input-body"></trix-editor>
             <input id="my_input" type="hidden" value="" ref="body" onChange={this.handleChange}/>
                <br/>

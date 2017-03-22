@@ -31,8 +31,6 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).single('logo');
 
 
-
-
 // Importing the topics model
 var Topics = require('../models/topic.js');
 var Articles = require('../models/article.js');

@@ -297,6 +297,7 @@ class Admin extends React.Component {
             </div>
           </div>
           <LogoUpload />
+          <DocUpload />
         </div>);
   }
 }

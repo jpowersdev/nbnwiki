@@ -57,7 +57,7 @@ apiRoutes.use(function(req, res, next) {
         return res.json({
           error: {
             error: true,
-            message: 'Failed to authenticate token'
+            message: err //'Failed to authenticate token'
           },
           code: 'B101',
           data: {
@@ -102,7 +102,7 @@ apiRoutesAdmin.use(function(req, res, next) {
         return res.json({
           error: {
             error: true,
-            message: 'Failed to authenticate token'
+            message: err // 'Failed to authenticate token'
           },
           code: 'B101',
           data: {
@@ -150,6 +150,9 @@ apiRoutesAdmin.use(function(req, res, next) {
 
 // Importing all endpoints for articles
 require('./api/articles')(apiRoutes);
+
+// Importing all endpoints for articles
+require('./api/documents')(apiRoutes);
 
 // Importing all endpoints for topics
 require('./api/topics')(apiRoutes);

@@ -2,6 +2,7 @@ import React from 'react';
 import {hashHistory} from 'react-router';
 import Alert from 'react-s-alert';
 import Loader from './loader.jsx';
+import DocUpload from './doc_upload.jsx';
 
 class EditArticle extends React.Component {
   constructor(props) {
@@ -112,6 +113,7 @@ class EditArticle extends React.Component {
            <div className="row">
             <div className="col-md-12 new-article-form">
               <trix-toolbar id="my_toolbar"></trix-toolbar>
+              <DocUpload />
           <trix-editor toolbar="my_toolbar" input="my_input" placeholder="Start writing here...." class="input-body"></trix-editor>
           <input id="my_input" type="hidden" value={this.state.body} ref="body" onChange={this.handleChange}/>
                  <br/>

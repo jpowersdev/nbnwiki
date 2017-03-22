@@ -9,11 +9,11 @@ $(".modal-fullscreen").on('hidden.bs.modal', function () {
 });
 
 $(window).scroll(function(){
-      if ($(this).scrollTop() > 135) {
-          $("#my_toolbar").addClass('fixed');
-          $("#my_toolbar .dialogs").addClass('fixed');
-      } else {
-          $("#my_toolbar").removeClass('fixed');
-          $("#my_toolbar .dialogs").removeClass('fixed');
-      }
-  });
+    if ($(this).scrollTop() > 135) {
+        $("#my_toolbar").addClass('fixed');
+        $("#my_toolbar .dialogs").addClass('fixed');
+    } else {
+        $("#my_toolbar").removeClass('fixed');
+        $("#my_toolbar .dialogs").removeClass('fixed');
+    }
+});
