@@ -39,18 +39,14 @@ class NewArticle extends React.Component {
     });
   }
 
-  attachments() {
-    var str = <div>;
-    foreach (var d in this.state.docs){
-      str += <a href={d.path}>{d.name}</a>;
-    }
-    str += </div>;
-    return str;
+  handleAssign(e) {
+    e.preventDefault();
+    var docs = this.state.docs;
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    var body = this.refs.body.value + attachments();
+    var body = this.refs.body.value;
     var title = this.refs.title.value;
     var topicId = this.refs.topic.value;
     if(body && title && topicId) {
@@ -107,8 +103,14 @@ class NewArticle extends React.Component {
         Alert.success(response.data.doc.name+" successfully uploaded to "+response.data.doc.path);
         $('#docUpload').modal('hide');
         that.setState({ 
-            docs: that.state.docs.concat([{name: doc.name, path: doc.path}])
+            docs: that.state.docs.concat([{name: doc.name, path: response.data.doc.path}])
         })
+        
+        var trix = document.querySelector('trix-editor');
+        trix.editor.insertHTML("<a href=http://localhost:5000/"+response.data.doc.path+">"+doc.name+"</a");
+        //that.refs.body.value += "<a href="+doc.path+">"+doc.name+"</a";
+        
+        that.handleChange();
       }
     });
   }
@@ -154,7 +156,7 @@ class NewArticle extends React.Component {
          <div className="row">
           <div className="col-md-12 new-article-form">
             <trix-toolbar id="my_toolbar"></trix-toolbar>
-            <trix-editor toolbar="my_toolbar" input="my_input" placeholder="Start writing here...." class="input-body">
+            <trix-editor id="trix" toolbar="my_toolbar" input="my_input" placeholder="Start writing here...." class="input-body">
             </trix-editor>
             <input id="my_input" type="hidden" value="" ref="body" onChange={this.handleChange}/>
              <br/>
