@@ -102,15 +102,9 @@ class NewArticle extends React.Component {
       else {
         Alert.success(response.data.doc.name+" successfully uploaded to "+response.data.doc.path);
         $('#docUpload').modal('hide');
-        that.setState({ 
-            docs: that.state.docs.concat([{name: doc.name, path: response.data.doc.path}])
-        })
         
         var trix = document.querySelector('trix-editor');
         trix.editor.insertHTML("<a href=http://localhost:5000/"+response.data.doc.path+">"+doc.name+"</a");
-        //that.refs.body.value += "<a href="+doc.path+">"+doc.name+"</a";
-        
-        that.handleChange();
       }
     });
   }
@@ -156,14 +150,9 @@ class NewArticle extends React.Component {
          <div className="row">
           <div className="col-md-12 new-article-form">
             <trix-toolbar id="my_toolbar"></trix-toolbar>
-            <trix-editor id="trix" toolbar="my_toolbar" input="my_input" placeholder="Start writing here...." class="input-body">
-            </trix-editor>
+            <trix-editor id="trix" toolbar="my_toolbar" input="my_input" placeholder="Start writing here...." class="input-body"></trix-editor>
             <input id="my_input" type="hidden" value="" ref="body" onChange={this.handleChange}/>
              <br/>
-             <label>Attachments</label>
-             <ul className="list-group"> 
-              {this.state.docs.map((doc) => <li className="list-group-item"><a href={doc.path}>{doc.name}</a></li>)}
-             </ul>
              <label>Choose topic</label>
              <select className="form-control topic-select" ref="topic">
                {this.state.topics.map(topic => (

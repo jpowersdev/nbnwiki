@@ -55,15 +55,16 @@ class EditArticle extends React.Component {
     var doc = this.refs.doc.files[0];
     var formData = new FormData();
     formData.append('doc', doc);
+    
     var myHeaders = new Headers({
-        "x-access-token": window.localStorage.getItem('userToken')
+        "x-access-token": window.localStorage.getItem('userToken'),
     });
     var myInit = { method: 'POST',
-                headers: myHeaders,
-               body: formData
+                   headers: myHeaders,
+                   body: formData
                };
     var that = this;
-    fetch('/api/docfiles/',myInit)
+    fetch('/api/docs/',myInit)
     .then(function(response) {
       return response.json();
     })
@@ -72,38 +73,11 @@ class EditArticle extends React.Component {
         Alert.error(response.error.message);
       }
       else {
-        var file = response.data.file;
-        var name = file.originalname;
-        var path = './client/docs/' + name;
-
-        var fileData = new FormData();
-        fileData.append('name', name);
-        fileData.append('path', path);
-
-        var fileHeaders = new Headers({
-          "x-access-token": window.localStorage.getItem('userToken')});
+        Alert.success(response.data.doc.name+" successfully uploaded to "+response.data.doc.path);
+        $('#docUpload').modal('hide');
         
-        var fileInit = { method: 'POST',
-                      headers: fileHeaders,
-                      body: fileData
-                    };
-
-        fetch('/api/docs/',fileInit)
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(response) {
-          if(response.error.error) {
-            Alert.error(response.error.message);
-          }
-          else {
-            Alert.success(name+" successfully uploaded to "+path);
-            $('#docUpload').modal('hide');
-            this.setState({ 
-                docs: this.state.docs.concat([fileInit.body])
-            })
-          }
-        });
+        var trix = document.querySelector('trix-editor');
+        trix.editor.insertHTML("<a href=http://localhost:5000/"+response.data.doc.path+">"+doc.name+"</a");
       }
     });
   }
@@ -171,9 +145,7 @@ class EditArticle extends React.Component {
            <div className="row">
             <div className="col-md-12 new-article-form">
               <trix-toolbar id="my_toolbar"></trix-toolbar>
-          <trix-editor toolbar="my_toolbar" input="my_input" placeholder="Start writing here...." class="input-body">
-            <div id="attachments"></div>        
-          </trix-editor>
+          <trix-editor toolbar="my_toolbar" input="my_input" placeholder="Start writing here...." class="input-body"></trix-editor>
           <input id="my_input" type="hidden" value={this.state.body} ref="body" onChange={this.handleChange}/>
                  <br/>
                  <label>Choose topic</label>
