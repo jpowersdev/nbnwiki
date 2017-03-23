@@ -88,7 +88,8 @@ module.exports = function(app) {
     Topics.where({id: req.params.id}).fetch({withRelated: [{'articles': function(qb) {
             if(req.query.count)
                 qb.limit(req.query.count);
-             qb.orderBy("updated_at","DESC");
+             //qb.orderBy("updated_at","DESC");
+             qb.orderBy('updated_at','ASC');
          }}]}).then(function(topic) {
       res.status(200).json({
         error: {

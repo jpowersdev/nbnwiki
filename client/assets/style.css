@@ -9,6 +9,11 @@
   padding: 0;
   margin-left: 5%;
 }
+.create-user {
+  text-align: left;
+  font-size: 16px;
+  color: #a0a0a0;
+}
 body{
   background-color: #ffffff;
   color: #4d4d4d;

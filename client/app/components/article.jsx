@@ -10,6 +10,11 @@ class ViewArticle extends React.Component {
     this.state = {article: {}, loading: true};
   }
 
+  onBackButtonEvent(e) {
+    e.preventDefault();
+    this.transitionTo('home');
+  }
+
   componentDidUpdate() {
     if(this.props.location.query.new) {
       $('#myModal').modal('show');
@@ -17,6 +22,7 @@ class ViewArticle extends React.Component {
   }
 
   componentDidMount(){
+    window.onpopstate = this.onBackButtonEvent;
     var myHeaders = new Headers({
         "Content-Type": "application/x-www-form-urlencoded",
         "x-access-token": window.localStorage.getItem('userToken')

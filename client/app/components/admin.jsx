@@ -236,19 +236,24 @@ class Admin extends React.Component {
                       <br/>
                         <form>
                           <div className="col-sm-12 form-group">
-                            <input type="text" className="form-control" ref="user_name" id="inputUserName" placeholder="Name" />
+                            <p className="create-user">Name</p>
+                            <input type="text" className="form-control" ref="user_name" id="inputUserName" />
                           </div>
                           <div className="col-sm-12 form-group">
-                            <input type="text" className="form-control" ref="user_about" id="inputUserAbout" placeholder="About" />
+                            <p className="create-user">About</p>
+                            <input type="text" className="form-control" ref="user_about" id="inputUserAbout" />
                           </div>
                         <div className="col-sm-12 form-group">
-                          <input type="email" className="form-control" ref="user_email" id="inputUserEmail" placeholder="Email" />
+                          <p className="create-user">Email</p>
+                          <input type="email" className="form-control" ref="user_email" id="inputUserEmail" />
                         </div>
                         <div className="col-sm-12 form-group">
-                          <input type="password" className="form-control" ref="user_password" id="inputUserPassword" placeholder="Password" />
+                          <p className="create-user">Password</p>
+                          <input type="password" className="form-control" ref="user_password" id="inputUserPassword" />
                         </div>
                         <div className="col-sm-12 form-group">
-                        <input type="grp" className="form-control" ref="user_grp" id="inputUserGrp" placeholder="Group" />
+                          <p className="create-user">Group</p>
+                          <input type="grp" className="form-control" ref="user_grp" id="inputUserGrp"/>
                       </div>
                         <div className="col-sm-12 form-group">
                           <button onClick={this.addUser} className="btn btn-default btn-block btn-lg">Add User</button>
@@ -297,7 +302,6 @@ class Admin extends React.Component {
             </div>
           </div>
           <LogoUpload />
-          <DocUpload />
         </div>);
   }
 }
