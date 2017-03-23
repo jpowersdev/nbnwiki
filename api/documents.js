@@ -4,7 +4,7 @@ var multer  = require('multer');
 
 var storage = multer.diskStorage({
         destination: function(req, file, cb) {
-            cb(null, './client/docs'); // Make sure this folder exists
+            cb(null, './public/docs'); // Make sure this folder exists
         },
         filename: function(req, file, cb) {
             cb(null, file.originalname);

@@ -172,6 +172,7 @@ require('./api/admin')(apiRoutesAdmin);
 
 app.use('/api', apiRoutes);
 app.use('/api', apiRoutesAdmin);
+app.use('/static', express.static('public'))
 
 app.use(express.static(__dirname + '/client'));
 

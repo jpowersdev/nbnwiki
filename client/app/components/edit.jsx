@@ -9,7 +9,7 @@ class EditArticle extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
-    this.state = {body: "",title: "", topic_id: "", topics: [], docs: [], loading: true};
+    this.state = {body: "",title: "", topic_id: "", topics: [], loading: true};
   }
 
   handleChange() {
@@ -77,7 +77,7 @@ class EditArticle extends React.Component {
         $('#docUpload').modal('hide');
         
         var trix = document.querySelector('trix-editor');
-        trix.editor.insertHTML("<a href=http://localhost:5000/"+response.data.doc.path+">"+doc.name+"</a");
+        trix.editor.insertHTML('<br/><a target="_blank" href="http://localhost:5000/static/docs/'+doc.name+'">'+doc.name+'</a>');
       }
     });
   }
