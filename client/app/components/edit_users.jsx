@@ -44,7 +44,7 @@ class EditUser extends React.Component {
       about: encodeURIComponent(this.refs.user_about.value),
       email: encodeURIComponent(this.refs.user_email.value),
       password: encodeURIComponent(this.refs.user_password.value),
-      grp: encodeURIComponent(this.refs.grp.value),
+      grp: encodeURIComponent(this.refs.user_group.value),
       id: encodeURIComponent(this.props.params.userId)
     };
     var myHeaders = new Headers({
@@ -95,7 +95,7 @@ class EditUser extends React.Component {
                             <input type="text" className="form-control" ref="user_email" id="inputUserName" value={this.state.email} onChange={this.handleChange} />
                           </div>
                           <div className="col-sm-12 form-group">
-                            <p className="create-user">Group</p>
+                            <p className="create-user" data-toggle="tooltip">Group</p>
                             <input type="text" className="form-control" ref="user_group" id="inputUserGroup" value={this.state.grp} onChange={this.handleChange} />
                           </div>
                           <div className="col-sm-12 form-group">

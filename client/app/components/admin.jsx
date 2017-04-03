@@ -56,7 +56,7 @@ class Admin extends React.Component {
       about: encodeURIComponent(this.refs.user_about.value),
       email: encodeURIComponent(this.refs.user_email.value),
       password: encodeURIComponent(this.refs.user_password.value),
-      grp: encodeURIComponent(this.refs.user_grp.value)
+      grp: encodeURIComponent(this.refs.user_group.value)
     };
     var myHeaders = new Headers({
         "Content-Type": "application/x-www-form-urlencoded",
@@ -253,7 +253,7 @@ class Admin extends React.Component {
                         </div>
                         <div className="col-sm-12 form-group">
                           <p className="create-user">Group</p>
-                          <input type="grp" className="form-control" ref="user_grp" id="inputUserGrp"/>
+                          <input type="grp" className="form-control" ref="user_group" id="inputUserGrp"/>
                       </div>
                         <div className="col-sm-12 form-group">
                           <button onClick={this.addUser} className="btn btn-default btn-block btn-lg">Add User</button>

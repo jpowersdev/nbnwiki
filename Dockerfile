@@ -13,11 +13,13 @@ COPY models/ ./models
 COPY migrations/ ./migrations
 COPY client/ ./client
 COPY api/ ./api
+COPY public/docs ./public/docs
 
 RUN npm run build
 
 EXPOSE 5000
 
-VOLUME db
+VOLUME /db
+VOLUME /public/docs
 
 CMD [ "npm", "start" ]

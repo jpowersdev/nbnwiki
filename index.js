@@ -110,7 +110,7 @@ apiRoutesAdmin.use(function(req, res, next) {
           }
         });
       } else {
-        if(decoded.grp == 1) {
+        if(decoded.grp == 0) {
           // if everything is good, save to request for use in other routes
           req.decoded = decoded;
           next();
